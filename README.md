@@ -63,4 +63,4 @@ Für die Synchronisation mit Apple Health:
 ---
 
 ## 📝 Lizenz
-Dieses Projekt wurde als Lernprojekt erstellt. Nutzung und Modifikation sind ausdrücklich erlaubt.
+Dieses Projekt wurde als Privatprojekt erstellt. Nutzung und Modifikation sind ausdrücklich erlaubt.
