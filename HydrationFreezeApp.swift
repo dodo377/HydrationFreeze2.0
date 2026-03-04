@@ -37,27 +37,63 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         checkNewDay()
         startTimer()
+        
+        // WICHTIG: Beobachtet das Aufwachen des Macs
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didWakeNotification,
+            object: nil,
+            queue: .main
+        ) { _ in
+            self.checkNewDay()
+        }
     }
 
     func checkNewDay() {
-        let today = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .none)
-        if lastUpdateDay != "" && lastUpdateDay != today {
-            // Historie sichern
-            let amount = Double(UserDefaults.standard.integer(forKey: "glassesDrunk")) * 0.2
-            let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()
-            saveToHistory(entry: HydrationLog(date: yesterday, amount: amount))
-            
-            // Reset
-            UserDefaults.standard.set(0, forKey: "glassesDrunk")
+        // ISO-Format ist immun gegen Spracheinstellungen (immer "2024-03-04")
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = formatter.string(from: Date())
+        
+        // Erster Start der App überhaupt
+        if lastUpdateDay == "" {
+            lastUpdateDay = today
+            return
         }
-        lastUpdateDay = today
+
+        // Vergleich: Ist das gespeicherte Datum ungleich heute?
+        if lastUpdateDay != today {
+            // 1. Hole den Wert von gestern direkt aus den UserDefaults
+            let glassesYesterday = UserDefaults.standard.integer(forKey: "glassesDrunk")
+            let amount = Double(glassesYesterday) * 0.2
+            
+            // 2. Berechne das Datum von gestern für den Log
+            let yesterdayDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()
+            
+            // 3. Archivieren
+            saveToHistory(entry: HydrationLog(date: yesterdayDate, amount: amount))
+            
+            // 4. RESET: Setze Zähler auf 0
+            UserDefaults.standard.set(0, forKey: "glassesDrunk")
+            
+            // 5. Speicherdatum aktualisieren
+            lastUpdateDay = today
+            print("Neuer Tag erkannt: Reset durchgeführt.")
+        }
     }
 
     func saveToHistory(entry: HydrationLog) {
-        let json = UserDefaults.standard.string(forKey: "historyJSON") ?? "[]"
-        var history = (try? JSONDecoder().decode([HydrationLog].self, from: json.data(using: .utf8)!)) ?? []
+        let jsonString = UserDefaults.standard.string(forKey: "historyJSON") ?? "[]"
+        guard let jsonData = jsonString.data(using: .utf8) else { return }
+        
+        // Sicherer Decode ohne "!"
+        var history = (try? JSONDecoder().decode([HydrationLog].self, from: jsonData)) ?? []
         history.append(entry)
-        if history.count > 14 { history.removeFirst() }
+        
+        // Behalte nur die letzten 14 Tage (Lastenheft-Anforderung)
+        if history.count > 14 {
+            history.removeFirst()
+        }
+        
         if let encoded = try? JSONEncoder().encode(history) {
             UserDefaults.standard.set(String(data: encoded, encoding: .utf8), forKey: "historyJSON")
         }

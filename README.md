@@ -1,16 +1,16 @@
-# 💧 Hydration Hero (macOS)
+# 💧 HydrationFreeze (macOS)
 
-**Hydration Hero** ist ein minimalistischer, aber effektiver Trink-Reminder für macOS. Die App hilft dir, deine tägliche Wasserzufuhr während der Arbeit im Blick zu behalten, indem sie in festen Intervallen eine kurze "Zwangspause" durch ein Vollbild-Overlay einfordert.
+**HydrationFreeze** ist ein intelligenter Trink-Reminder für macOS, der Gesundheit zur Priorität macht. Die App unterbricht den Workflow in festen Intervallen durch ein Vollbild-Overlay und motiviert dazu, das tägliche Ziel von 2 Litern nicht nur zu erreichen, sondern zu übertreffen.
 
 ---
 
 ## ✨ Features
 
-- **Smart Blocking Overlay**: Schaltet sich über alle aktiven Bildschirme, um eine kurze Trinkpause zu erzwingen.
-- **10-Gläser-Tracker**: Interaktives Tracking von 10 Gläsern (je 0,2L) pro Tag für das 2-Liter-Ziel.
-- **Visualisierte Statistik**: Integriertes Dashboard mit **Swift Charts**, das deinen Fortschritt der letzten 14 Tage farblich auswertet (Grün bei Zielerreichung).
-- **Cross-Account Sync**: Ein dynamisch generierter **QR-Code** erlaubt es, via iPhone-Shortcuts Wasser in Apple Health zu loggen – selbst wenn Mac und iPhone unterschiedliche Apple-IDs nutzen.
-- **Daten-Export**: Export deiner Historie als `.csv` Datei direkt aus den Einstellungen.
+- **Smart Blocking Overlay**: Legt sich über alle Monitore, um eine kurze Trinkpause zu erzwingen.
+- **Unbegrenztes Tracking**: Ein 10-Gläser-System für das Basis-Ziel (2L) plus ein dynamischer Plus-Button für zusätzliche Hydrierung.
+- **Echtzeit-Statistik**: Ein Dashboard mit **Swift Charts**, das archivierte Daten und den aktuellen Tagesfortschritt kombiniert.
+- **Robuster Tages-Reset**: Erkennt Datumswechsel zuverlässig beim App-Start und beim Aufwachen des Macs (Wake-from-Sleep).
+- **Mobile-Sync**: Ein statischer QR-Code (via qr.io) erlaubt das schnelle Loggen in Apple Health via iPhone.
 - **Tahoe Ready**: Nutzt moderne APIs für Menüleisten-Extras und haptisches Feedback.
 
 ---
@@ -37,12 +37,10 @@ Für die Synchronisation mit Apple Health:
 
 | Bereich | Funktion |
 | :--- | :--- |
-| **Menüleiste** | Startet manuelle Testsperren und öffnet die Einstellungen. |
-| **Sperrbildschirm** | Erscheint automatisch alle X Minuten. Klicke auf die Tropfen, um zu loggen. |
-| **Statistik** | Zeigt deine Beständigkeit. Balken werden blau (im Prozess) oder grün (Ziel erreicht). |
-| **Export** | Speichert deine gesamte `historyJSON` als lesbare Tabelle. |
-
-
+| **Menüleiste** | Startet manuelle Testsperren und bietet schnellen Zugriff auf Einstellungen. |
+| **Sperrbildschirm** | Erscheint automatisch. Klicke auf die Tropfen oder den Plus-Button zum Loggen. |
+| **Statistik** | Visualisiert die letzten 14 Tage. Balken wachsen über die 2L-Marke hinaus. |
+| **Export** | Speichert die Historie als `;`-separierte CSV-Datei. |
 
 ---
 
@@ -57,10 +55,13 @@ Für die Synchronisation mit Apple Health:
 
 ## 🛡 Systemanforderungen
 
-- **OS**: macOS 14.0+ (Optimiert für macOS Tahoe)
+- **OS**: macOS 14.0+ (Sonoma / Optimiert für macOS Tahoe 26.2)
 - **Hardware**: Getestet auf Apple Silicon (M1/M2/M3/M4) und Intel Macs.
 
 ---
 
-## 📝 Lizenz
-Dieses Projekt wurde als Privatprojekt erstellt. Nutzung und Modifikation sind ausdrücklich erlaubt.
+## 📄 Lizenz
+
+Dieses Projekt ist unter der **MIT-Lizenz** lizenziert. Das bedeutet, du darfst den Code frei verwenden, verändern und weitergeben, solange der ursprüngliche Urheberrechtshinweis erhalten bleibt. 
+
+Details findest du in der englischsprachigen [LICENSE](LICENSE) Datei.

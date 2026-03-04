@@ -59,7 +59,23 @@ struct SettingsView: View {
 
     func getHistory() -> [HydrationLog] {
         let data = historyJSON.data(using: .utf8) ?? Data()
-        return (try? JSONDecoder().decode([HydrationLog].self, from: data)) ?? []
+        var history = (try? JSONDecoder().decode([HydrationLog].self, from: data)) ?? []
+        
+        // Berechne den aktuellen Stand von HEUTE
+        let todayAmount = Double(glassesDrunk) * 0.2
+        let today = Date()
+        
+        // Prüfen, ob der letzte Eintrag in der Historie schon von heute ist
+        if let lastIndex = history.indices.last,
+           Calendar.current.isDate(history[lastIndex].date, inSameDayAs: today) {
+            // Falls ja, aktualisiere den Wert (falls du z.B. gerade getrunken hast)
+            history[lastIndex] = HydrationLog(date: today, amount: todayAmount)
+        } else {
+            // Falls heute noch gar nicht in der Historie ist, füge es für die Anzeige hinzu
+            history.append(HydrationLog(date: today, amount: todayAmount))
+        }
+        
+        return history
     }
     
     func generateQRCode(from string: String) -> NSImage? {
@@ -76,11 +92,26 @@ struct SettingsView: View {
     }
 
     func exportCSV() {
-        let history = getHistory()
-        var csv = "Datum,Liter\n"
-        for entry in history { csv += "\(entry.date),\(entry.amount)\n" }
+        let history = getHistory() // Nutzt jetzt die kombinierte Liste inkl. heute
+        var csv = "Datum;Liter\n"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        
+        for entry in history {
+            // Formatiert die Liter-Zahl mit Komma für Excel/Numbers
+            let amountString = String(format: "%.1f", entry.amount).replacingOccurrences(of: ".", with: ",")
+            csv += "\(dateFormatter.string(from: entry.date));\(amountString)\n"
+        }
+        
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.commaSeparatedText]
-        savePanel.begin { if $0 == .OK, let url = savePanel.url { try? csv.write(to: url, atomically: true, encoding: .utf8) } }
+        savePanel.nameFieldStringValue = "Hydration_Export.csv"
+        
+        savePanel.begin { result in
+            if result == .OK, let url = savePanel.url {
+                try? csv.write(to: url, atomically: true, encoding: .utf8)
+            }
+        }
     }
 }
