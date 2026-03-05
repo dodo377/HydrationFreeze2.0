@@ -14,46 +14,56 @@ struct SettingsView: View {
         TabView {
             Form {
                 Section("Intervalle") {
-                    Stepper("Erinnerung alle \(intervalMinutes) Min.", value: $intervalMinutes, in: 5...120)
-                    Stepper("Sperre für \(freezeSeconds) Sek.", value: $freezeSeconds, in: 5...60)
+                    Stepper(value: $intervalMinutes, in: 5...120) {
+                        LabeledContent("Erinnerung alle", value: "\(intervalMinutes) Min.")
+                    }
+                    Stepper(value: $freezeSeconds, in: 5...60) {
+                        LabeledContent("Sperre für", value: "\(freezeSeconds) Sek.")
+                    }
                 }
                 
                 Section(header: Text("Trink-Konfiguration")) {
-                    // Stepper für die Glasgröße
+                    // Glasgröße
                     Stepper(value: $selectedGlassSize, in: 100...1000, step: 50) {
                         HStack {
-                            Image(systemName: "drop.fill")
-                                .foregroundColor(.blue)
-                            Text("Glasgröße:")
-                            Spacer()
-                            Text("\(selectedGlassSize) ml")
-                                .fontWeight(.bold)
+                            Image(systemName: "drop.fill").foregroundColor(.blue).imageScale(.small)
+                            LabeledContent("Glasgröße", value: "\(selectedGlassSize) ml")
                         }
                     }
                     
-                    // Stepper für das Tagesziel
+                    // Tagesziel
                     Stepper(value: $dailyGoal, in: 1000...5000, step: 100) {
                         HStack {
-                            Image(systemName: "target")
-                                .foregroundColor(.red)
-                            Text("Tagesziel:")
-                            Spacer()
-                            Text("\(String(format: "%.1f", Double(dailyGoal)/1000.0)) L")
-                                .fontWeight(.bold)
+                            Image(systemName: "target").foregroundColor(.red).imageScale(.small)
+                            LabeledContent("Tagesziel", value: "\(String(format: "%.1f", Double(dailyGoal)/1000.0)) L")
                         }
                     }
 
+                    // Info-Text schön eingerückt
                     let glassesNeeded = Double(dailyGoal) / Double(selectedGlassSize)
                     Text("Das entspricht ca. \(String(format: "%.1f", glassesNeeded)) Gläsern pro Tag.")
                         .font(.caption)
                         .foregroundColor(.secondary)
+                        .padding(.leading, 24) // Platz für die Icons oben lassen
                 }
 
-                Section("Daten") {
-                    Button("CSV Export") { exportCSV() }
-                    Button("Reset heute", role: .destructive) { glassesDrunk = 0 }
+                Section("Daten & Reset") {
+                    HStack {
+                        Button(action: exportCSV) {
+                            Label("CSV Export", systemImage: "square.and.arrow.up")
+                        }
+                        Spacer()
+                        Button(role: .destructive) {
+                            glassesDrunk = 0
+                        } label: {
+                            Label("Heute zurücksetzen", systemImage: "trash")
+                        }
+                    }
+                    .buttonStyle(.borderless) // Macht Buttons in Forms dezenter
                 }
             }
+            .padding(20)
+            .controlSize(.regular)
             .tabItem { Label("Optionen", systemImage: "gearshape") }
 
             VStack(spacing: 20) {

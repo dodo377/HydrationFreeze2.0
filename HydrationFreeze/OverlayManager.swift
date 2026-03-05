@@ -42,7 +42,7 @@ struct OverlayView: View {
     @AppStorage("freezeSeconds") var freezeSeconds = 15
     @AppStorage("glassesDrunk") var glassesDrunk = 0
     @AppStorage("selectedGlassSize") private var selectedGlassSize: Int = 250
-    @AppStorage("dailyGoal") private var dailyGoal: Int = 2000 // Standard 2 Liter
+    @AppStorage("dailyGoal") private var dailyGoal: Int = 2000
     
     @State private var timeRemaining: Double = 0
     @State private var motivationMessage: String = "Zeit für einen Schluck!"
@@ -50,7 +50,12 @@ struct OverlayView: View {
     var onFinished: () -> Void
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
-    // Hilfsvariablen für die Berechnung
+    // --- DYNAMISCHE LOGIK ---
+
+    private var glassesNeededForGoal: Int {
+        max(1, Int(Double(dailyGoal) / Double(selectedGlassSize)))
+    }
+
     private var currentTotalML: Int {
         glassesDrunk * selectedGlassSize
     }
@@ -60,15 +65,19 @@ struct OverlayView: View {
     }
 
     private var progressFraction: Double {
-        let total = max(0.1, totalDuration)
-        let clamped = min(max(timeRemaining, 0), total)
-        return clamped / total
+        let total = max(0.1, Double(freezeSeconds))
+        return min(timeRemaining / total, 1.0)
     }
-    
-    private var totalDuration: Double {
-        max(0.1, Double(freezeSeconds))
+
+    // Berechnet die Größe der Tropfen basierend auf der Anzahl
+    private var dynamicIconSize: CGFloat {
+        let totalIcons = max(glassesNeededForGoal, glassesDrunk)
+        if totalIcons <= 8 { return 45 }
+        if totalIcons <= 12 { return 35 }
+        if totalIcons <= 20 { return 25 }
+        return 20
     }
-    
+
     let quotes = [
         "Sehr gut! Dein Körper dankt es dir. 💧",
         "Bleib hydriert! Dein Fokus wird schärfer. 🧠",
@@ -86,10 +95,10 @@ struct OverlayView: View {
 
     private var headerSection: some View {
         VStack(spacing: 15) {
-            Image(systemName: "drop.circle.fill")
+            Image(systemName: isGoalReached ? "checkmark.circle.fill" : "drop.circle.fill")
                 .resizable()
                 .frame(width: 80, height: 80)
-                .foregroundColor(.blue)
+                .foregroundColor(isGoalReached ? .green : .blue)
                 .symbolEffect(.bounce, value: glassesDrunk)
 
             Text(isGoalReached ? "Tagesziel erreicht! 🎉" : motivationMessage)
@@ -97,11 +106,9 @@ struct OverlayView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
-                .animation(.spring(), value: motivationMessage)
 
             if isGoalReached {
-                let totalLiters = Double(currentTotalML) / 1000.0
-                Text("Du hast heute \(String(format: "%.1f", totalLiters)) Liter getrunken. Wahnsinn!")
+                Text("Du hast heute \(Double(currentTotalML)/1000.0, specifier: "%.1f") Liter getrunken. Wahnsinn!")
                     .font(.title3)
                     .foregroundColor(.green)
             }
@@ -110,22 +117,18 @@ struct OverlayView: View {
 
     private func glassButton(index: Int) -> some View {
         Button(action: {
-            if glassesDrunk == index {
-                addWater()
-            }
+            if glassesDrunk == index { addWater() }
         }) {
             VStack(spacing: 5) {
                 Image(systemName: index < glassesDrunk ? "drop.fill" : "drop")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
+                    .frame(width: dynamicIconSize, height: dynamicIconSize)
                     .foregroundColor(index < glassesDrunk ? .blue : .white.opacity(0.2))
                     .symbolEffect(.pulse, value: glassesDrunk == index)
 
-                // Dynamische Anzeige der Liter pro Glas
-                let liters = Double(index + 1) * Double(selectedGlassSize) / 1000.0
-                Text(String(format: "%.1f", liters))
-                    .font(.system(size: 10, design: .monospaced))
+                Text("\(Double(index + 1) * Double(selectedGlassSize) / 1000.0, specifier: "%.1f")")
+                    .font(.system(size: dynamicIconSize * 0.3, design: .monospaced))
                     .foregroundColor(.gray)
             }
         }
@@ -134,36 +137,35 @@ struct OverlayView: View {
     }
 
     private var glassesRow: some View {
-        HStack(spacing: 12) {
-            // Der Zusatz id: \.self löst den Fehler bei dynamischen Ranges
-            ForEach(0..<max(8, glassesDrunk), id: \.self) { index in
-                if index < 10 {
-                    glassButton(index: index)
-                }
-            }
-
-            if glassesDrunk >= 8 {
-                Button(action: { addWater() }) {
-                    VStack(spacing: 5) {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 35, height: 35)
-                            .foregroundColor(.green)
-                            .symbolEffect(.bounce, value: glassesDrunk)
-                        
-                        let nextLiters = Double(glassesDrunk + 1) * Double(selectedGlassSize) / 1000.0
-                        Text(String(format: "%.1f", nextLiters))
-                            .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(.green)
+        VStack(spacing: 10) {
+            // Flow-ähnliches Layout: HStack, die bei Bedarf scrollt, aber versucht alles anzuzeigen
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: glassesNeededForGoal > 10 ? 8 : 15) {
+                    ForEach(0..<max(glassesNeededForGoal, glassesDrunk), id: \.self) { index in
+                        glassButton(index: index)
                     }
+
+                    // Plus-Button für Extra-Gläser
+                    Button(action: { addWater() }) {
+                        VStack(spacing: 5) {
+                            Image(systemName: "plus.circle.fill")
+                                .resizable()
+                                .frame(width: dynamicIconSize, height: dynamicIconSize)
+                                .foregroundColor(.green)
+                            
+                            Text("\(Double(glassesDrunk + 1) * Double(selectedGlassSize) / 1000.0, specifier: "%.1f")")
+                                .font(.system(size: dynamicIconSize * 0.3, design: .monospaced))
+                                .foregroundColor(.green)
+                        }
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
-                .transition(.scale.combined(with: .opacity))
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
             }
+            .background(RoundedRectangle(cornerRadius: 20).fill(Color.white.opacity(0.05)))
+            .frame(maxWidth: 700)
         }
-        .padding()
-        .background(RoundedRectangle(cornerRadius: 20).fill(Color.white.opacity(0.05)))
     }
 
     private var qrAndProgress: some View {
@@ -172,53 +174,51 @@ struct OverlayView: View {
                 .resizable()
                 .interpolation(.none)
                 .scaledToFit()
-                .frame(width: 100, height: 100)
+                .frame(width: 90, height: 90)
+                .padding(8)
                 .background(Color.white)
                 .cornerRadius(12)
-                .padding(4)
-                .background(Color.white)
-                .cornerRadius(16)
 
             ProgressView(value: progressFraction)
                 .tint(.blue)
                 .frame(width: 300)
+                .scaleEffect(x: 1, y: 1.5, anchor: .center)
         }
     }
 
     var body: some View {
-        VStack(spacing: 35) {
+        VStack(spacing: 40) {
             headerSection
             glassesRow
             qrAndProgress
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.opacity(0.96))
-        .onAppear { timeRemaining = 0 }
+        .onAppear {
+            timeRemaining = 0
+            updateMessage()
+        }
         .onReceive(timer) { _ in
-            let step: Double = 0.1
-            let total = max(0.1, totalDuration)
-            let newValue = timeRemaining + step
-            if newValue < total {
-                timeRemaining = newValue
+            let total = max(0.1, Double(freezeSeconds))
+            if timeRemaining < total {
+                timeRemaining += 0.1
             } else {
-                timeRemaining = total
                 onFinished()
             }
         }
     }
 
     func updateMessage() {
-        if isGoalReached {
-            motivationMessage = "Wahnsinn! Du bist über dem Ziel! 🏆"
-        } else {
-            // Wähle ein Zitat basierend auf dem Fortschritt
-            let quoteIndex = min(glassesDrunk, quotes.count - 1)
-            motivationMessage = quotes[quoteIndex]
+            if isGoalReached {
+                motivationMessage = "Wahnsinn! Du bist über dem Ziel! 🏆"
+            } else {
+                let quoteIndex = min(glassesDrunk, quotes.count - 1)
+                motivationMessage = quotes[quoteIndex]
+            }
+        }
+        
+        private func addWater() {
+            glassesDrunk += 1
+            updateMessage()
         }
     }
-    
-    private func addWater() {
-        glassesDrunk += 1
-        updateMessage()
-    }
-}
