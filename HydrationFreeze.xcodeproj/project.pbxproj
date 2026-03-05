@@ -15,22 +15,9 @@
 		C96995E02F4F010D00D3CC0B /* HydrationFreeze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HydrationFreeze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C96996052F4F249600D3CC0B /* Exceptions for "HydrationFreeze" folder in "HydrationFreeze" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				.gitignore,
-			);
-			target = C96995DF2F4F010D00D3CC0B /* HydrationFreeze */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C96995E22F4F010D00D3CC0B /* HydrationFreeze */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				C96996052F4F249600D3CC0B /* Exceptions for "HydrationFreeze" folder in "HydrationFreeze" target */,
-			);
 			path = HydrationFreeze;
 			sourceTree = "<group>";
 		};
