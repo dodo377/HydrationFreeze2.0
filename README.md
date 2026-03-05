@@ -89,3 +89,11 @@ Für die Synchronisation mit Apple Health:
 ## 📄 Lizenz
 
 Dieses Projekt ist unter der **MIT-Lizenz** lizenziert. Details findest du in der [LICENSE.md](LICENSE.md).
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true });
+  // Dieser kleine Zusatz erzwingt das Rendering für GitHub Pages
+  window.onload = function() {
+    mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+  };
+</script>
