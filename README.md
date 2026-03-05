@@ -1,18 +1,19 @@
 # 💧 HydrationFreeze (macOS)
 
-**HydrationFreeze** ist ein konfigurierbarer Trink-Reminder für macOS, der Gesundheit zur Priorität macht. Die App unterbricht den Workflow in festen Intervallen durch ein Vollbild-Overlay und zwingt zu einer kurzen Pause, um das individuelle Trinkziel zu erreichen.
+**HydrationFreeze** ist ein intelligenter Trink-Reminder für macOS, der Gesundheit zur Priorität macht. Die App unterbricht den Workflow in festen Intervallen durch ein adaptives Vollbild-Overlay und fördert eine bewusste Pause zur Hydration.
 
 ---
 
-## ✨ Features (v1.4 Update)
+## ✨ Features (v1.4.2 Update)
 
+- **Adaptive UI & Smart Scaling**: Das Overlay berechnet die Icon-Größe dynamisch. Egal ob 4 große Gläser oder 20 kleine Tropfen – das Interface skaliert verlustfrei und überlappungsfrei.
 - **Individuelle Glasgröße**: Konfiguriere dein Standard-Gefäß (100ml bis 1000ml) für präzises Tracking.
-- **Variables Tagesziel**: Setze dein persönliches Limit (z.B. 2,5L oder 3L) – die App passt alle Statistiken und Erfolgsmeldungen automatisch an.
-- **Smart Blocking Overlay**: Legt sich über alle Monitore, um eine kurze Trinkpause zu erzwingen. Die Fortschrittsanzeige berechnet sich live aus deiner Glasgröße.
-- **Adaptive Statistik**: Ein Dashboard mit **Swift Charts**, das eine dynamische Ziellinie (`RuleMark`) zeigt, die mit deinem eingestellten Tagesziel mitwandert.
+- **Dynamisches Tagesziel**: Setze dein persönliches Limit (z.B. 2,5L) – die App passt die benötigte Tropfenanzahl und die Erfolgsmeldungen automatisch an.
+- **macOS Native Design**: Eine komplett überarbeitete Einstellungsansicht nach Apple Human Interface Guidelines für ein nahtloses Systemerlebnis.
+- **Smart Blocking Overlay**: Legt sich über alle Monitore auf System-Level. Die Fortschrittsanzeige berechnet sich live aus deiner konfigurierten Glasgröße.
+- **Adaptive Statistik**: Ein Dashboard mit **Swift Charts**, inklusive dynamischer Ziellinie (`RuleMark`), die mit deinem Ziel mitwandert.
 - **Robuster Tages-Reset**: Erkennt Datumswechsel zuverlässig beim App-Start und beim Aufwachen des Macs (Wake-from-Sleep).
-- **Mobile-Sync**: Ein statischer QR-Code erlaubt das schnelle Loggen in Apple Health via iPhone.
-- **Menubar-Only Design**: Läuft dezent in der Statusleiste ohne das Dock zu füllen.
+- **Mobile-Sync**: Ein statischer QR-Code erlaubt das schnelle Loggen in Apple Health via iPhone Kurzbefehl.
 
 ---
 
@@ -37,26 +38,26 @@ Für die Synchronisation mit Apple Health:
 
 | Bereich | Funktion |
 | :--- | :--- |
-| **Optionen** | Intervalle, Sperrdauer, Glasgröße (ml) und Tagesziel (L) einstellen. |
-| **Sperrbildschirm** | Erscheint automatisch. Klicke auf die Tropfen zum Loggen – die Liter-Schritte passen sich deiner Glasgröße an. |
-| **Statistik** | Visualisiert die letzten 14 Tage. Balken werden grün, sobald dein individuelles Ziel erreicht ist. |
-| **Export** | Speichert die Historie als lokalisierte `;`-separierte CSV-Datei. |
+| **Optionen** | **Neu:** Natives macOS-Layout für Intervalle, Sperrdauer, Glasgröße (ml) und Tagesziel (L). |
+| **Sperrbildschirm** | **Adaptive Darstellung:** Klicke auf die Tropfen zum Loggen – die Icons skalieren automatisch bei hohen Zielen. |
+| **Statistik** | Visualisiert die letzten 14 Tage. Balken wechseln die Farbe zu Grün, sobald dein individuelles Ziel erreicht ist. |
+| **Export** | Speichert die Historie als lokalisierte `;`-separierte CSV-Datei (Excel/Numbers kompatibel). |
 
 ---
 
 ## 📂 Projektstruktur
 
 - `HydrationFreezeApp.swift`: Steuerzentrale der App, Timer-Logik und Menüleisten-Steuerung.
-- `OverlayManager.swift`: Verwaltet die `NSPanel` Instanzen und das dynamische Design des Sperrbildschirms.
-- `SettingsView.swift`: Konfiguration, adaptive Swift Charts Statistik und QR-Sync.
-- `HydrationLog.swift`: Datenmodell für die persistente Speicherung via `UserDefaults`.
+- `OverlayManager.swift`: Fenster-Management (`NSPanel`) und Multi-Monitor-Logik.
+- `OverlayView.swift`: **Herzstück der v1.4.2** – Berechnet das adaptive Icon-Scaling und die Ziel-Visualisierung.
+- `SettingsView.swift`: Konfiguration im nativem Design, Swift Charts Statistik und QR-Sync.
 
 ---
 
 ## 🛡 Systemanforderungen
 
-- **OS**: macOS 14.0+ (Optimiert für macOS 16 "Tahoe" / 2026)
-- **Hardware**: Getestet auf Apple Silicon (M-Serie) und Intel Macs.
+- **OS**: macOS 14.0+ (Optimiert für macOS 15+ / Apple Silicon & Intel)
+- **Status**: Validiert für Release v1.4.2 (2026)
 
 ---
 
