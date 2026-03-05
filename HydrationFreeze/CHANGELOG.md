@@ -5,7 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.0] - Aktueller Stand
+## [1.4.1] (Aktuelle Version)
+### Hinzugefügt
+- Einstellbare Glasgröße (100ml - 1000ml).
+- Individuelles Tagesziel-Limit (dynamische RuleMark im Chart).
+- Automatische Berechnung der benötigten Glasanzahl in den Einstellungen.
+
+### Geändert
+- Overlay-Logik von statischen 200ml auf dynamische `@AppStorage`-Werte umgestellt.
+- CSV-Export nutzt nun die konfigurierten Volumen-Werte.
+- Refactoring der `SettingsView` für bessere Übersicht.
+
+## [1.4.0]
 
 ### Hinzugefügt
 - **Unbegrenztes Tracking (Bonus-Gläser):** Einführung eines permanent sichtbaren, grünen Plus-Buttons (`plus.circle.fill`), um Wasser über das ursprüngliche 2,0L-Tagesziel hinaus zu loggen. Das Design bleibt dabei konsistent zu den Standard-Gläsern.

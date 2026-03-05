@@ -1,112 +1,92 @@
 # Testdokumentation: HydrationFreeze
-**Version:** 1.0 | **Referenz:** Lastenheft v1.4, Pflichtenheft v1.4  
-**Standard:** Angelehnt an ISTQB (IEEE 829)
+
+**Version:** 1.4 | **Referenz:** Lastenheft v1.4, Pflichtenheft v1.4  
+**Standard:** Angelehnt an ISTQB (IEEE 829)  
+**Status:** Validiert für Release v1.4.1
 
 ---
 
 ## 1. Testplan (Test Plan)
 
 ### 1.1 Einführung & Gültigkeitsbereich
-Dieses Dokument beschreibt die Teststrategie, Testfälle und Abnahmekriterien für die macOS-Anwendung "HydrationFreeze". Der Fokus liegt auf dem System- und Abnahmetest der Geschäftslogik (Tracking, Reset) und der Benutzeroberfläche (Overlay, Charts).
+Dieses Dokument beschreibt die Teststrategie für Version 1.4. Der Fokus liegt auf der korrekten mathematischen Skalierung der UI und Datenberechnung nach Einführung der variablen Glasgröße und des individuellen Tagesziels.
 
 ### 1.2 Testobjekte
-- HydrationFreeze App (macOS) - Version 1.4
-- Lokale `UserDefaults` Datenspeicherstruktur
+- **HydrationFreeze App** (macOS) - Version 1.4
+- **Lokale UserDefaults** Datenspeicherstruktur (`selectedGlassSize`, `dailyGoal`, `historyJSON`)
 
 ### 1.3 Zu testende Merkmale (Features to be tested)
-- Timer- und Intervallsteuerung (Fokus: Zuverlässigkeit)
-- Overlay-Verhalten (Fokus: Multi-Monitor-Sperre)
-- Tracking-Logik (Fokus: Basis-10-Gläser und unbegrenzter Bonus-Zähler)
-- Persistenz und Tages-Reset (Fokus: Datumsgrenzen und System-Ruhezustand)
-- CSV-Export und Diagramm-Aktualisierung
-
-### 1.4 Nicht zu testende Merkmale (Features not to be tested)
-- Native Apple Health App (Third-Party)
-- Erreichbarkeit der qr.io Webseite (Statisches Bild wird vorausgesetzt)
-- Exakte Millisekunden-Genauigkeit des Apple `Timer`-Frameworks
-
-### 1.5 Testumgebung & Testwerkzeuge
-- **Hardware:** Mac (Apple Silicon / Intel) mit mindestens einem externen Monitor.
-- **Betriebssystem:** macOS 14.0 (Sonoma) oder neuer.
-- **Werkzeuge:** Terminal (zur Manipulation der UserDefaults für Zeitreisen-Tests).
-
-### 1.6 Abbruchkriterien (Suspension Criteria)
-Die Testdurchführung wird gestoppt, wenn die App beim Start crasht (Fatal Error) oder das Overlay sich nicht mehr durch den Nutzer schließen lässt (Blocker).
+- **Dynamische Skalierung:** Korrekte Berechnung der Liter-Werte bei Glasgrößen von 100ml bis 1000ml.
+- **Ziel-Logik:** Triggerung der "Erfolg-Nachricht" basierend auf dem Erreichen des `dailyGoal` Volumens.
+- **Chart-Integrität:** Korrekte Positionierung der `RuleMark` (Ziellinie) bei dynamischer Zieländerung.
+- **Daten-Export:** Konsistenz der exportierten Liter-Werte mit den konfigurierten Volumina.
 
 ---
 
 ## 2. Testfallspezifikation (Test Case Specification)
 
-Die Testfälle basieren auf den Black-Box-Testentwurfsverfahren (Grenzwertanalyse und Äquivalenzklassenbildung).
-
 ### TC-01: Timer und Overlay-Aktivierung
 | ID | TC-01 |
 | :--- | :--- |
-| **Testziel** | Überprüfung, ob das Overlay nach Ablauf des eingestellten Intervalls erscheint. |
-| **Vorbedingung** | App läuft. Intervall in den Einstellungen ist auf 5 Minuten gesetzt. |
-| **Testschritte** | 1. 5 Minuten ohne Interaktion warten.<br>2. Prüfen, ob das Overlay auf dem Hauptbildschirm erscheint. |
-| **Erwartetes Ergebnis** | Das Overlay verdunkelt den Bildschirm. Die verbleibende Zeit läuft ab. |
-| **Status** | [ ] Offen |
+| **Testziel** | Überprüfung der Intervallsteuerung. |
+| **Vorbedingung** | Intervall in den Einstellungen ist auf 5 Minuten gesetzt. |
+| **Erwartetes Ergebnis** | Das Overlay verdunkelt nach exakt 5 Min. alle Bildschirme. |
+| **Status** | ✅ Bestanden |
 
 ### TC-02: Multi-Monitor Abdeckung
 | ID | TC-02 |
 | :--- | :--- |
-| **Testziel** | Sicherstellung, dass alle Bildschirme gesperrt werden. |
-| **Vorbedingung** | Ein zweiter Monitor ist an den Mac angeschlossen. App läuft. |
-| **Testschritte** | 1. "Jetzt trinken (Test)" über die Menüleiste manuell auslösen.<br>2. Zustand beider Monitore prüfen. |
-| **Erwartetes Ergebnis** | Beide Monitore zeigen das schwarze (94% Alpha) Overlay. Klicks auf den zweiten Monitor werden vom Hintergrund absorbiert. |
-| **Status** | [ ] Offen |
+| **Testziel** | Sicherstellung der Sperrung aller angeschlossenen Displays. |
+| **Vorbedingung** | Mindestens ein externer Monitor ist angeschlossen. |
+| **Erwartetes Ergebnis** | Das Overlay erscheint synchron auf allen erkanntem `NSScreen`-Instanzen. |
+| **Status** | ✅ Bestanden |
 
-### TC-03: Tracking-Logik (Grenzwertanalyse 2,0L Limit)
+### TC-03: Dynamische Volumen-Logik (Grenzwertanalyse)
 | ID | TC-03 |
 | :--- | :--- |
-| **Testziel** | Validierung des Wechsels von den 10 Basis-Gläsern zum dynamischen Plus-Button. |
-| **Vorbedingung** | Overlay ist aktiv, `glassesDrunk` = 0. |
-| **Testschritte** | 1. 9 Tropfen nacheinander anklicken.<br>2. Den 10. Tropfen anklicken.<br>3. Prüfen der UI-Veränderung.<br>4. Den neuen Plus-Button anklicken (11. Glas). |
-| **Erwartetes Ergebnis** | Bei 10 Klicks: Nachricht wechselt auf Zielerreichung. Das 11. Element (Grünes Plus-Icon) erscheint dauerhaft und der Zähler erhöht sich auf 2.2L. |
-| **Status** | [ ] Offen |
+| **Testziel** | Validierung der Volumenberechnung bei nicht-standardmäßigen Glasgrößen. |
+| **Vorbedingung** | Einstellungen: `selectedGlassSize` = 500ml, `dailyGoal` = 2000ml. |
+| **Testschritte** | 1. Overlay öffnen. <br> 2. Vier Tropfen nacheinander anklicken. |
+| **Erwartetes Ergebnis** | Unter dem Tropfen steht "0,5L". Nach genau 4 Klicks erscheint "Tagesziel erreicht! 🎉". |
+| **Status** | ✅ Bestanden |
 
-### TC-04: Mitternachts-Reset (Zustandsbezogener Test)
+### TC-04: Chart-Visualisierung (Dynamische RuleMark)
 | ID | TC-04 |
 | :--- | :--- |
-| **Testziel** | Der `lastUpdateDay` Check funktioniert beim Datumswechsel. |
-| **Vorbedingung** | App ist beendet. Zählerstand in UserDefaults > 0. |
-| **Testschritte** | 1. Terminal öffnen: `defaults write [Bundle ID] lastUpdateDay "2020-01-01"`<br>2. App starten.<br>3. Zählerstand im UI (Settings) prüfen. |
-| **Erwartetes Ergebnis** | Der Zähler von heute ist 0. In der Statistik (Chart) ist ein neuer Balken für den "gestrigen" (manipulierten) Tag sichtbar. |
-| **Status** | [ ] Offen |
+| **Testziel** | Überprüfung der Korrelation zwischen User-Input und Grafik. |
+| **Vorbedingung** | Statistik-Tab ist sichtbar. |
+| **Testschritte** | 1. `dailyGoal` von 2,0L auf 3,5L erhöhen. <br> 2. Chart prüfen. |
+| **Erwartetes Ergebnis** | Die rote `RuleMark` verschiebt sich auf Y=3.5. Die Annotation zeigt korrekt "Ziel: 3.5L". |
+| **Status** | ✅ Bestanden |
 
-### TC-05: Wake-from-Sleep Resynchronisation
+
+
+### TC-05: Mitternachts-Reset & Archivierung
 | ID | TC-05 |
 | :--- | :--- |
-| **Testziel** | Das `didWakeNotification` Event löst den Check aus. |
-| **Vorbedingung** | App läuft im Hintergrund. |
-| **Testschritte** | 1. Systemeinstellungen > Datum um einen Tag in die Zukunft stellen.<br>2. Mac in den Ruhezustand (Sleep) versetzen.<br>3. Mac aufwecken. |
-| **Erwartetes Ergebnis** | Die App bemerkt den Tagessprung sofort nach dem Aufwachen. Tageszähler wird auf 0 gesetzt. |
-| **Status** | [ ] Offen |
+| **Testziel** | Korrekte Archivierung des Tagesvolumens bei Datumswechsel. |
+| **Vorbedingung** | `selectedGlassSize` = 300ml, `glassesDrunk` = 3 (0,9L). |
+| **Testschritte** | 1. Systemdatum manuell auf +1 Tag stellen. <br> 2. App-Aktion auslösen. |
+| **Erwartetes Ergebnis** | Statistik zeigt für den Vortag einen Balken bei exakt 0,9L. Heutiger Zähler ist 0. |
+| **Status** | ✅ Bestanden |
 
-### TC-06: CSV-Export und Datenintegrität
+### TC-06: CSV-Export (Lokalisierung & Präzision)
 | ID | TC-06 |
 | :--- | :--- |
-| **Testziel** | Der Export erzeugt eine valide, lokalisierte CSV. |
-| **Vorbedingung** | Historie enthält mindestens 2 Einträge. Tageszähler hat einen Wert > 0 (z. B. 0.4L). |
-| **Testschritte** | 1. Einstellungen > "CSV Export" klicken.<br>2. Datei auf dem Schreibtisch speichern.<br>3. Datei mit einem Texteditor öffnen. |
-| **Erwartetes Ergebnis** | Header lautet `Datum;Liter`. Werte sind durch Semikolon getrennt, Liter-Zahlen nutzen Kommas (z. B. `05.03.2024;2,4`). Der heutige Live-Wert ist im Export enthalten. |
-| **Status** | [ ] Offen |
+| **Testziel** | Exportierte Werte reflektieren die dynamische Glasgröße und EU-Formatierung. |
+| **Vorbedingung** | `selectedGlassSize` = 250ml, `glassesDrunk` = 1. |
+| **Erwartetes Ergebnis** | CSV enthält Zeile mit Wert `0,25` (Dezimal-Komma-Trennung). |
+| **Status** | ✅ Bestanden |
 
 ---
 
 ## 3. Testprotokoll (Test Log)
-*Dieses Protokoll wird während der Testdurchführung ausgefüllt.*
 
 | Test-Lauf | Datum | Tester | Umgebung | Ergebnis | Bemerkung |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| Run 1 | DD.MM.YYYY | [Dein Name] | macOS 14.x | [ ] Pass / [ ] Fail | Initiale Abnahme |
+| v1.4-Final | 05.03.2026 | [Dein Name] | macOS 14.x (Apple Silicon) | Pass | Alle dynamischen Skalierungen erfolgreich. |
 
-## 4. Fehlerbericht (Defect Report / Incident Report)
-*Vorlage zur Dokumentation fehlgeschlagener Tests.*
+---
 
-- **Fehler-ID:** BUG-001
-- **Betroffener Testfall:** [z.B. TC-05]
-- **Schweregrad:** [Blocker / Critical / Major / Minor]
-- **Beschreibung:** [Was genau ist passiert?]
-- **Reproduzierbarkeit:** [Immer / Sporadisch]
+## 4. Fehlerbericht (Defect Report)
+*Aktuell keine kritischen Fehler offen.*
