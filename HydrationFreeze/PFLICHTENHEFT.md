@@ -8,6 +8,31 @@
 
 ---
 
+## 📖 Revisionshistorie
+
+| Version | Datum      | Status | Änderungen | Autor |
+| :--- | :--- | :--- | :--- | :--- |
+| 1.0.0 | 15.02.2024 | Initial | Grundgerüst der technischen Spezifikation (PF10-30). | dodo377 |
+| 1.2.0 | 25.02.2024 | Review | Ergänzung der Statistik-Engine und Swift Charts Logik. | dodo377 |
+| 1.4.0 | 01.03.2024 | Update | Refactoring des Konfigurations-Managements (PF40). | dodo377 |
+| 1.4.1 | 04.03.2024 | Bugfix | Korrektur der Skalierungslogik für Multi-Monitor-Betrieb. | dodo377 |
+| **1.4.2** | **05.03.2024** | **Final** | **UML-Live-Rendering fixiert (Mermaid-JS); Dokumentation für Release finalisiert.** | dodo377 |
+
+---
+
+## 📑 Inhaltsverzeichnis
+1. [**Technische Architektur**](#1-technische-architektur)
+2. [**Detaillierte Systemfunktionen (PF)**](#2-detaillierte-systemfunktionen-pf)
+    * 2.1 [[/PF10/] Dynamischer Overlay-Mechanismus](#21-pf10-dynamischer-overlay-mechanismus)
+    * 2.2 [[/PF20/] Adaptive Benutzeroberfläche](#22-pf20-adaptive-benutzeroberfläche--interaktion)
+    * 2.3 [[/PF30/] Statistik-Engine](#23-pf30-statistik-engine-swift-charts)
+    * 2.4 [[/PF40/] Konfigurations-Management](#24-pf40-konfigurations-management-refactoring-v142)
+    * 2.5 [[/PF50/] Daten-Export & Synchronisation](#25-pf50-daten-export--synchronisation)
+3. [**Test-Szenarien & Abnahme**](#3-test-szenarien--abnahme-qualitätssicherung)
+4. [**Wartung & Roadmap**](#4-wartung--roadmap)
+
+---
+
 ## 1. Technische Architektur
 - **Frameworks:** - `SwiftUI`: Gesamte Benutzeroberfläche und Datenbindung.
     - `AppKit`: Fenster-Management (`NSPanel`) für die System-Sperre.

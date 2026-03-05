@@ -11,6 +11,9 @@ und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.
 ### Hinzugefügt
 - **Adaptive UI-Skalierung:** Einführung einer dynamischen Icon-Berechnung (`dynamicIconSize`). Die Wassertropfen im Overlay passen ihre Größe nun automatisch an das Verhältnis von Tagesziel und Glasgröße an, um eine perfekte Darstellung ohne Scrollen zu gewährleisten.
 - **Intelligentes Grid-Layout:** Das Overlay-System berechnet nun die exakte Anzahl der benötigten Symbole basierend auf dem Quotienten aus Zielvolumen und Glasvolumen.
+- Dynamisches Live-Rendering für UML-Diagramme in der Online-Dokumentation (Mermaid.js Integration).
+- Neues Sequenzdiagramm für den Overlay-Manager (/PF10/).
+- Zustandsdiagramm für die App-Logik (/PF20/).
 
 ### Geändert
 - **macOS Design-Refinement:** Komplette Überarbeitung der `SettingsView` unter Verwendung von `LabeledContent`. Dies sorgt für ein exaktes Alignment der Labels und Steuerelemente gemäß den Apple Human Interface Guidelines.
@@ -19,6 +22,8 @@ und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.
 
 ### Behoben
 - **Layout-Clutter:** Fix eines Fehlers, bei dem die UI-Elemente im Overlay bei hohen Tageszielen oder sehr kleinen Glasgrößen über den Bildschirmrand hinausragten.
+- Fehlerhafte Darstellung der Architektur-Grafiken auf GitHub Pages.
+- Reduzierung von Repository-Müll durch optimierte `.gitignore`.
 
 ## [1.4.1]
 ### Hinzugefügt
