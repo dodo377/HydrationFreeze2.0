@@ -26,8 +26,8 @@
 - **Adaptive Skalierungslogik (Neu in v1.4.2):** Die `OverlayView` berechnet die Icon-Größe $S_{Icon}$ dynamisch in Abhängigkeit der Gesamtzahl der benötigten Gläser ($n_{Total}$), um die Bildschirmbreite optimal zu nutzen:
   $$S_{Icon} = \begin{cases} 45 & \text{wenn } n \leq 8 \\ 35 & \text{wenn } 8 < n \leq 12 \\ 25 & \text{wenn } 12 < n \leq 20 \\ 20 & \text{wenn } n > 20 \end{cases}$$
   
-  ```mermaid
-  sequenceDiagram
+```mermaid
+sequenceDiagram
     autonumber
     participant App as AppState / User
     participant OM as OverlayManager
@@ -37,20 +37,20 @@
 
     App->>OM: Trigger: Intervall erreicht
     Note over OM: Start Lock-Prozess
-    
+
     OM->>Calc: Sende n_Total (Gläser für Ziel)
     Note right of Calc: Anwendung der Fallunterscheidung<br/>(45pt, 35pt, 25pt, 20pt)
     Calc-->>OM: Return S_Icon (optimierte Größe)
-    
+
     OM->>NS: Erfrage alle aktiven Displays
-    
+
     loop Für jeden gefundenen Monitor
         OM->>UI: Initialisiere Vollbild-Overlay
         UI->>UI: Rendere Grid mit S_Icon
         Note over UI: Level: .screenSaver (Topmost)
     end
-    
-    OM-->>App: Status: System gesperrt
+
+OM-->>App: Status: System gesperrt
 ```
 
 
