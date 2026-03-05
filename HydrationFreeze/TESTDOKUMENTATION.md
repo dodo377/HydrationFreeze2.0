@@ -3,171 +3,101 @@
 # Testdokumentation: HydrationFreeze
 
 **Version:** 1.4.2 | **Referenz:** Lastenheft v1.4.2, Pflichtenheft v1.4.2  
-**Standard:** Angelehnt an ISTQB (IEEE 829)  
-**Status:** Bedingt freigegeben (siehe DEF-06)
+**Standard:** ISTQB-Standard (basierend auf IEEE 829)  
+**Status:** Bedingt freigegeben (Bekannter Fehler: DEF-06)
 
 ---
 
-## 1. Testplan (Test Plan)
+## 1. Testkonzept (Test Plan)
 
-### 1.1 Einführung & Gültigkeitsbereich
-Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt auf der **visuellen Integrität** und der **adaptiven UI-Skalierung** bei variablen Glas- und Zielgrößen sowie der Einhaltung der macOS Design-Richtlinien in den Einstellungen.
+### 1.1 Einführung & Testumfang
+Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schwerpunkt liegt auf der **visuellen Integrität**, der **adaptiven UI-Skalierung** bei variablen Konfigurationen sowie der Konformität mit den macOS Design-Richtlinien (Human Interface Guidelines).
 
 ### 1.2 Testobjekte
 - **HydrationFreeze App** (macOS) - Version 1.4.2
-- **UI-Komponenten:** Adaptive `OverlayView`, Refactored `SettingsView`.
+- **UI-Komponenten:** Adaptive `OverlayView`, überarbeitete `SettingsView` (SwiftUI).
 
-### 1.3 Zu testende Merkmale (Features to be tested)
-- **Adaptive Icon-Skalierung:** Korrekte Größenanpassung der Tropfen-Icons bei hoher Anzahl (>10 bis >20 Gläser).
-- **Responsive Layout:** Verhinderung von Layout-Clutter und Overlap im Vollbild-Overlay.
-- **Header-Status-Logik:** Korrekter Wechsel der Icons/Farben bei Erreichung des Tagesziels.
-- **Design-Konformität:** Korrektes Alignment der UI-Elemente in den Einstellungen (v1.4.2 Refactoring).
+### 1.3 Übergeordnete Testziele
+- Nachweis der korrekten dynamischen Skalierung bei hoher Icon-Last (>20 Einheiten).
+- Validierung der Barrierefreiheit und Layout-Stabilität im Vollbild-Modus.
+- Sicherstellung der Regression der Basisfunktionen (Timer, Persistenz) aus v1.4.1.
 
 ---
 
 ## 2. Testfallspezifikation (Test Case Specification)
 
-### TC-01 bis TC-06 (Übernommen aus v1.4.1)
-*Alle funktionalen Tests bezüglich Timer, Multi-Monitor, CSV-Export und Reset-Logik wurden erfolgreich re-validiert (Regression Test).*
+### 2.1 Basistests (Regression v1.4.1)
 
-#### TC-01: App-Initialisierung (MenuBar)
+| ID | Prüfpunkt / Beschreibung | Erwartetes Ergebnis | Status |
+| :--- | :--- | :--- | :--- |
+| **TC-01** | App-Start / Menüleiste | Icon erscheint im MenuBar; Timer startet im Hintergrund. | ✅ |
+| **TC-02** | Intervall-Timer | Nach Ablauf der Zeit wird das Overlay-Panel getriggert. | ✅ |
+| **TC-03** | System-Sperre | Overlay liegt auf Level `.screenSaver` über allen Fenstern. | ✅ |
+| **TC-04** | Glas-Interaktion | Klick auf Icon erhöht Zähler **und** schließt das Overlay. | ⚠️ **Fail** |
+| **TC-05** | Daten-Persistenz | Fortschritt bleibt nach App-Neustart (AppStorage) erhalten. | ✅ |
+| **TC-06** | Chart-Stabilität | Swift Charts skalieren artefaktfrei bei Fenster-Resizing. | ✅ |
 
-| ID | TC-01 |
-| :--- | :--- |
-| **Testziel** | Validierung des korrekten App-Starts in der macOS Umgebung. |
-| **Erwartetes Ergebnis** | Das HydrationFreeze-Icon erscheint in der Statusleiste. Das System-Menü reagiert auf Klick; der Timer startet im Hintergrund. |
-| **Status** | ✅ Bestanden (Regression) |
+![V-Modell](DocumentationAssets/v-modell_hydrationfreeze_v1.4.2.png)
 
-#### TC-02: Intervall-Timer (Basisfunktion)
+### 2.2 Spezifische Tests v1.4.2 (Adaptive UI & Skalierung)
 
-| ID | TC-02 |
-| :--- | :--- |
-| **Testziel** | Sicherstellung, dass die Zeitsteuerung den Sperr-Prozess auslöst. |
-| **Testschritte** | Timer-Intervall auf 1 Minute setzen (Debug-Mode). |
-| **Erwartetes Ergebnis** | Nach Ablauf der Zeit wird der `OverlayManager` getriggert und das Vollbild-Fenster erscheint. |
-| **Status** | ✅ Bestanden (Regression) |
+#### TC-07: Adaptive Icon-Größe (Scaling Test)
+- **Beschreibung:** Validierung der dynamischen Verkleinerung der Icons bei kleinen Glasgrößen.
+- **Vorbedingung:** Einstellungen: 3000ml Ziel / 100ml Glas (30 Icons).
+- **Erwartetes Ergebnis:** Icons werden automatisch auf 20pt reduziert. Alle 30 Icons sind ohne Überlappung sichtbar.
+- **Status:** ✅ Bestanden
 
-#### TC-03: System-Sperre (Overlay Level)
+#### TC-08: UI-Statuswechsel (Goal Reach)
+- **Beschreibung:** Visuelle Bestätigung der Zielerreichung im Overlay.
+- **Erwartetes Ergebnis:** Header-Icon wechselt zu `checkmark.circle.fill` (grün); Motivationstext aktualisiert sich.
+- **Status:** ✅ Bestanden
 
-| ID | TC-03 |
-| :--- | :--- |
-| **Testziel** | Prüfung der Sperr-Priorität (Topmost Window). |
-| **Erwartetes Ergebnis** | Das Overlay liegt über allen anderen Applikationen (Level `.screenSaver`). Es ist nicht möglich, Fenster dahinter zu fokussieren. |
-| **Status** | ✅ Bestanden (Regression) |
+#### TC-09: Alignment-Check (Settings View)
+- **Beschreibung:** Prüfung der macOS-Konformität (HIG) des neuen Layouts.
+- **Erwartetes Ergebnis:** Labels sind linksbündig, Stepper/Picker rechtsbündig ausgerichtet (`LabeledContent`).
+- **Status:** ✅ Bestanden
 
-#### TC-04: Glas-Interaktion (Logging)
+#### TC-10: Grenzwertanalyse (Extreme Konfiguration)
+- **Methode:** Boundary Value Analysis.
+- **Szenario:** 100ml Glas bei 5000ml Tagesziel (50 Icons).
+- **Erwartetes Ergebnis:** Stabile Generierung von 50 Icons; keine Abstürze; korrekte Berechnung ($V_{total} = 5.0L$).
+- **Status:** ✅ Bestanden
 
-| ID | TC-04 |
-| :--- | :--- |
-| **Testziel** | Validierung der Dateneingabe über die Benutzeroberfläche. |
-| **Testschritte** | Klick auf ein aktives Glas-Icon im Overlay. |
-| **Erwartetes Ergebnis** | 1. `glassesDrunk` wird um +1 erhöht. <br> 2. Die `OverlayView` schließt sich sofort (Sperre aufgehoben). |
-| **Status** | ⚠️ Fail (Regression) |
+#### TC-11: Entscheidungstabellentest (Logik)
+- **Methode:** Decision Table Testing.
+- **Szenario:** Timer abgelaufen + Ziel bereits erreicht.
+- **Erwartetes Ergebnis:** Sperre löst aus (Pausen-Aspekt); Anzeige zeigt sofort Erfolgs-Status (Grün/Haken).
+- **Status:** ✅ Bestanden
 
-#### TC-05: Daten-Persistenz (UserDefaults)
-
-| ID | TC-05 |
-| :--- | :--- |
-| **Testziel** | Überprüfung der Datensicherheit nach App-Neustart. |
-| **Testschritte** | 3 Gläser loggen, App hart beenden (Force Quit) und neu starten. |
-| **Erwartetes Ergebnis** | Der Fortschritt bleibt erhalten; die `@AppStorage`-Variablen laden die korrekten Werte. |
-| **Status** | ✅ Bestanden (Regression) |
-
-#### TC-06: UI-Stabilität (Chart-Resizing)
-
-| ID | TC-06 |
-| :--- | :--- |
-| **Testziel** | Prüfung der `Swift Charts` bei Fenstergrößenänderung. |
-| **Erwartetes Ergebnis** | Das Diagramm skaliert ohne Artefakte mit der Fenstergröße mit. Die `RuleMark` bleibt korrekt positioniert. |
-| **Status** | ✅ Bestanden (Regression) |
-
-### TC-07: Adaptive Icon-Größe (Scaling Test)
-
-| ID | TC-07 |
-| :--- | :--- |
-| **Testziel** | Validierung der dynamischen Verkleinerung der Icons bei kleinen Glasgrößen. |
-| **Vorbedingung** | Einstellungen: `dailyGoal` = 3000ml, `selectedGlassSize` = 100ml (Ergibt 30 Icons). |
-| **Erwartetes Ergebnis** | Icons werden automatisch auf die kleinste Stufe (20pt) reduziert. Alle 30 Icons sind ohne Scrollen sichtbar und überlappen sich nicht. |
-| **Status** | ✅ Bestanden |
-
-### TC-08: UI-Statuswechsel (Goal Reach)
-
-| ID | TC-08 |
-| :--- | :--- |
-| **Testziel** | Visuelle Bestätigung der Zielerreichung im Overlay. |
-| **Testschritte** | Gläser tracken, bis `currentTotalML >= dailyGoal`. |
-| **Erwartetes Ergebnis** | 1. Header-Icon wechselt von `drop.circle.fill` (blau) zu `checkmark.circle.fill` (grün). <br> 2. Motivationstext zeigt "Wahnsinn! Du bist über dem Ziel! 🏆". |
-| **Status** | ✅ Bestanden |
-
-### TC-09: Alignment-Check (Settings View)
-
-| ID | TC-09 |
-| :--- | :--- |
-| **Testziel** | Überprüfung der macOS-Konformität des neuen Layouts. |
-| **Erwartetes Ergebnis** | Labels (z.B. "Tagesziel") sind exakt linksbündig ausgerichtet. Die dazugehörigen Stepper/Picker sind rechtsbündig ausgerichtet (`LabeledContent`-Standard). |
-| **Status** | ✅ Bestanden |
-
-### TC-10: Grenzwertanalyse (Eingabevalidierung)
-
-| ID | TC-10 |
-| :--- | :--- |
-| **Testmethode** | Grenzwertanalyse (Boundary Value Analysis) |
-| **Testziel** | Verhindern von ungültigen Zuständen durch Extremwerte. |
-| **Testschritte** | 1. Glasgröße auf Minimum (100ml) setzen. <br> 2. Tagesziel auf Maximum (5000ml) setzen. |
-| **Erwartetes Ergebnis** | Das System muss 50 Icons generieren. Die App darf nicht abstürzen und die Berechnung muss korrekt bleiben ($V_{total} = 5.0L$). |
-| **Status** | ✅ Bestanden |
-
-### TC-11: Entscheidungstabellentest (Overlay-Priorität)
-
-| ID | TC-11 |
-| :--- | :--- |
-| **Testmethode** | Entscheidungstabelle (Decision Table) |
-| **Bedingungen** | 1. Timer abgelaufen? (JA) <br> 2. Ziel bereits erreicht? (JA) <br> 3. Sperre aktiv? (JA) |
-| **Erwartetes Ergebnis** | Auch wenn das Tagesziel erreicht ist, muss die Sperre ausgelöst werden (Gesundheitsaspekt: Pause/Bewegung), aber die Anzeige muss den Erfolgsstatus (Grün/Haken) direkt zeigen. |
-| **Status** | ✅ Bestanden |
-
-### TC-12: Error Guessing (Robustheit)
-
-| ID | TC-12 |
-| :--- | :--- |
-| **Testmethode** | Fehlerraten (Error Guessing) |
-| **Testziel** | Verhalten bei unvorhergesehenen Systemereignissen. |
-| **Testschritte** | Während das Overlay aktiv ist, wird ein Monitor physisch getrennt. |
-| **Erwartetes Ergebnis** | Der `OverlayManager` muss das Fenster-Layout sofort neu berechnen und die Sperre auf dem verbleibenden Monitor lückenlos aufrechterhalten. |
-| **Status** | ✅ Bestanden |
+#### TC-12: Error Guessing (Robustheit)
+- **Szenario:** Physische Monitor-Trennung (Hotplugging) bei aktivem Overlay.
+- **Erwartetes Ergebnis:** `OverlayManager` berechnet Layout sofort neu; Sperre bleibt lückenlos erhalten.
+- **Status:** ✅ Bestanden
 
 ---
 
 ## 3. Testprotokoll (Test Log)
 
-| Test-Lauf | Testfall-ID | Datum | Tester | Ergebnis | Bemerkung |
+| Test-Lauf | Referenz-IDs | Datum | Tester | Ergebnis | Bemerkung |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **v1.4.2-Regression-Core** | **TC-01 bis TC-04** | 05.03.2026 | [D. Obendorf] | **Fail** | Kernfunktionen weitgehend stabil; Regression TC-04 offen (siehe DEF-06). |
-| **v1.4.2-Regression-Data** | **TC-05** | 05.03.2026 | [D. Obendorf] | **Pass** | Persistenz & Reset-Logik verifiziert. |
-| **v1.4.2-Regression-UI** | **TC-06** | 05.03.2026 | [D. Obendorf] | **Pass** | Chart-Skalierung (Regression) stabil. |
-| **v1.4.2-New-Scaling** | **TC-07** | 05.03.2026 | [D. Obendorf] | **Pass** | **Fix bestätigt:** Adaptive Skalierung aktiv. |
-| **v1.4.2-New-UX** | **TC-08, TC-09** | 05.03.2026 | [D. Obendorf] | **Pass** | Status-Header & HIG-Alignment ok. |
-| **v1.4.2-Boundary** | **TC-10** | 05.03.2026 | [D. Obendorf] | **Pass** | Grenzwert (50 Icons) ohne Fehler. |
-| **v1.4.2-Decision** | **TC-11** | 05.03.2026 | [D. Obendorf] | **Pass** | Sperre triggert auch bei 100% Fortschritt. |
-| **v1.4.2-Robustness** | **TC-12** | 05.03.2026 | [D. Obendorf] | **Pass** | Monitor-Wechsel stabil abgefangen. |
-
-### Zusammenfassung der Testergebnisse
-Alle Testfälle wurden erfolgreich abgeschlossen. Besonders hervorzuheben ist die Stabilität der **adaptiven UI-Skalierung (TC-07)**, die auch bei extremen Nutzerkonfigurationen (kleine Glasgrößen bei hohem Tagesziel) ein sauberes Layout ohne Clipping gewährleistet. Das Projekt ist in der Version 1.4.2 technisch und visuell abnahmebereit.
+| **v1.4.2-REG** | **TC-01 – TC-06** | 05.03.2026 | [D. Obendorf] | **Fail** | Regression TC-04 fehlgeschlagen (DEF-06). |
+| **v1.4.2-UI** | **TC-07 – TC-09** | 05.03.2026 | [D. Obendorf] | **Pass** | Adaptive Skalierung & Alignment erfolgreich. |
+| **v1.4.2-SPEC** | **TC-10 – TC-12** | 05.03.2026 | [D. Obendorf] | **Pass** | Grenzwerte & Robustheit (Hotplugging) stabil. |
 
 ---
 
 ## 4. Fehlerbericht (Defect Report)
 
-| ID | Beschreibung | Testfall | Status | Lösung |
+| ID | Beschreibung | Testfall | Status | Lösung / Workaround |
 | :--- | :--- | :--- | :--- | :--- |
 | **DEF-01** | Layout-Clipping bei >25 Tropfen. | TC-07 | ✅ Behoben | Dynamische $S_{Icon}$ Logik implementiert. |
 | **DEF-02** | Unsauberes Settings-Alignment. | TC-09 | ✅ Behoben | Umstellung auf `LabeledContent`. |
-| **DEF-03** | Git-Divergenz (Deployment). | - | ✅ Behoben | Force-Alignment der Tags & Historie. |
-| **DEF-04** | Potenzielle Division durch Null. | TC-10 | ✅ Behoben | Stepper-Validierung (min. 100ml). |
-| **DEF-05** | Sperre fehlte bei Zielerreichung. | TC-11 | ✅ Behoben | Logik-Update für unabhängige Sperren. |
-| DEF-06 | UI-Interaktion: Klick auf Tropfen-Icons loggt Volumen, beendet aber nicht das Overlay-Panel. | TC-04 | ❌ Offen | Event-Handler in `OverlayView` muss `dismiss()` oder `NSApp.stopModal()` triggern. |
+| **DEF-04** | Potenzielle Division durch Null. | TC-10 | ✅ Behoben | Stepper-Validierung verhindert Werte < 100ml. |
+| **DEF-05** | Sperre fehlte bei Zielerreichung. | TC-11 | ✅ Behoben | Logik-Update für unabhängige Sperr-Trigger. |
+| **DEF-06** | **Klick auf Tropfen-Icon loggt Volumen, beendet aber das Overlay nicht.** | TC-04 | ❌ Offen | **Workaround:** App mit `Command + Q` schließen. oder auf ein Symbol im Dock klicken |
 
 ---
-*Status: Keine kritischen Defekte (Showstopper) verbleibend.*
+*Status: Keine kritischen Showstopper für die Datenintegrität. Interaktions-Bug (DEF-06) für v1.4.3 eingeplant.*
 
 [← Zurück zur Übersicht](../README.md)
+
