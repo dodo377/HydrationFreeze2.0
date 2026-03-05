@@ -1,14 +1,29 @@
 # 💧 HydrationFreeze (macOS)
 
-## Projektdokumentation
-Hier findest du alle relevanten Unterlagen zum Projekt:
+> **Ein intelligenter Trink-Reminder, der deinen Workflow schützt, indem er dich zur Hydration zwingt.**
 
-* [**Lastenheft**](./HydrationFreeze/LASTENHEFT.md) – Definition der Anforderungen
-* [**Pflichtenheft**](./HydrationFreeze/PFLICHTENHEFT.md) – Technische Umsetzung
-* [**Testdokumentation**](./HydrationFreeze/TESTDOKUMENTATION.md) – Qualitätssicherung & Testprotokolle
-* [**Changelog**](./HydrationFreeze/CHANGELOG.md) – Versionshistorie
+[![Release](https://img.shields.io/github/v/release/dodo377/HydrationFreeze2.0?color=blue)](https://github.com/dodo377/HydrationFreeze2.0/releases)
+[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey)](https://apple.com/macos)
+[![Docs](https://img.shields.io/badge/Doku-GitHub%20Pages-green)](https://dodo377.github.io/HydrationFreeze2.0/)
 
-**HydrationFreeze** ist ein intelligenter Trink-Reminder für macOS, der Gesundheit zur Priorität macht. Die App unterbricht den Workflow in festen Intervallen durch ein adaptives Vollbild-Overlay und fördert eine bewusste Pause zur Hydration.
+---
+
+## 📖 Projektdokumentation
+Besuche unsere **[interaktive Dokumentations-Seite](https://dodo377.github.io/HydrationFreeze2.0/)** für eine saubere Leseansicht:
+
+* [**Lastenheft**](./HydrationFreeze/LASTENHEFT.md) | [**Pflichtenheft**](./HydrationFreeze/PFLICHTENHEFT.md) | [**Testdokumentation**](./HydrationFreeze/TESTDOKUMENTATION.md) | [**Changelog**](./HydrationFreeze/CHANGELOG.md)
+
+---
+
+## 🧠 Funktionsweise (Logic Flow)
+Die App folgt einer strikten Zustandslogik, um sicherzustellen, dass du dein Tagesziel erreichst:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> OverlaySperre: Timer abgelaufen & Ziel offen
+    OverlaySperre --> Idle: Wasser geloggt
+    Idle --> ZielErreicht: Tagesziel erfüllt
 
 ---
 
