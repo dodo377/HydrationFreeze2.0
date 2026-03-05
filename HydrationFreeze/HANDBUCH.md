@@ -40,8 +40,8 @@ Ein Klick auf das Tropfen-Icon öffnet das Hauptmenü:
 Sobald dein eingestellter Timer abläuft, erscheint das Overlay auf **allen angeschlossenen Monitoren**.
 
 
-
-* **Interaktion:** Die Sperre lässt sich nur aufheben, indem du auf ein **Glas-Icon** klickst. Dies bestätigt, dass du gerade ein Glas Wasser getrunken hast.
+* **Logging:** Jeder Klick auf einen Wassertropfen registriert ein getrunkenes Glas.
+* **Beenden der Sperre:** Entweder 30 Sekunden (default eingestellt) Warten oder auf ein Symbol im Dock klicken. 
 * **Skalierung (v1.4.2):** Die App berechnet die Icon-Größe automatisch. Wenn du viele kleine Gläser trinkst, werden die Icons kleiner dargestellt, um den Bildschirm optimal zu nutzen.
 
 ### 3.3 Statistiken (Swift Charts)
