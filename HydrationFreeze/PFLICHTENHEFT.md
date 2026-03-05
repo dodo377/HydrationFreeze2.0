@@ -25,11 +25,58 @@
 - **Multi-Monitor-Support:** Automatisierte Iteration über `NSScreen.screens`.
 - **Adaptive Skalierungslogik (Neu in v1.4.2):** Die `OverlayView` berechnet die Icon-Größe $S_{Icon}$ dynamisch in Abhängigkeit der Gesamtzahl der benötigten Gläser ($n_{Total}$), um die Bildschirmbreite optimal zu nutzen:
   $$S_{Icon} = \begin{cases} 45 & \text{wenn } n \leq 8 \\ 35 & \text{wenn } 8 < n \leq 12 \\ 25 & \text{wenn } 12 < n \leq 20 \\ 20 & \text{wenn } n > 20 \end{cases}$$
+  
+  sequenceDiagram
+    autonumber
+    participant App as AppState / User
+    participant OM as OverlayManager
+    participant Calc as Logic (dynamicIconSize)
+    participant NS as NSScreen.screens
+    participant UI as OverlayView (NSPanel)
+
+    App->>OM: Trigger: Intervall erreicht
+    Note over OM: Start Lock-Prozess
+    
+    OM->>Calc: Sende n_Total (Gläser für Ziel)
+    Note right of Calc: Anwendung der Fallunterscheidung<br/>(45pt, 35pt, 25pt, 20pt)
+    Calc-->>OM: Return S_Icon (optimierte Größe)
+    
+    OM->>NS: Erfrage alle aktiven Displays
+    
+    loop Für jeden gefundenen Monitor
+        OM->>UI: Initialisiere Vollbild-Overlay
+        UI->>UI: Rendere Grid mit S_Icon
+        Note over UI: Level: .screenSaver (Topmost)
+    end
+    
+    OM-->>App: Status: System gesperrt
 
 ### 2.2 [ /PF20/ ] Adaptive Benutzeroberfläche & Interaktion
 - **Dynamisches Grid:** Nutzung von `max(glassesNeededForGoal, glassesDrunk)` für die Generierung der Button-Reihe. Dies stellt sicher, dass das Ziel visualisiert wird, auch wenn noch nichts getrunken wurde.
 - **Responsives Design:** Einbettung der `glassesRow` in eine horizontale `ScrollView` und dynamisches Spacing, um Überlappungen bei extremen Konfigurationen (z. B. 100ml Gläser bei 5L Ziel) zu verhindern.
 - **Erfolgs-Feedback:** Bedingte Formatierung des Headers; Wechsel zu `.green` und `checkmark.circle.fill` bei Erreichung von `isGoalReached`.
+
+stateDiagram-v2
+    [*] --> Idle: App-Start
+    
+    state Idle {
+        [*] --> WarteAufIntervall
+        WarteAufIntervall --> CountdownAktiv: Timer läuft (60 min)
+    }
+
+    CountdownAktiv --> OverlaySperre: Timer = 0 & Ziel nicht erreicht
+    CountdownAktiv --> ZielErreicht: Tagesziel erfüllt
+    
+    state OverlaySperre {
+        [*] --> SichtbarAufAllenMonitoren
+        SichtbarAufAllenMonitoren --> Interaktion: User trinkt Glas
+        Interaktion --> SichtbarAufAllenMonitoren: Update Progress
+    }
+
+    OverlaySperre --> Idle: Glas geloggt (Sperre hebt auf)
+    ZielErreicht --> Idle: Neues Glas getrunken (optional)
+    
+    Idle --> [*]: App Schließen
 
 ### 2.3 [ /PF30/ ] Statistik-Engine (Swift Charts)
 - **Dynamische Ziellinie:** Implementierung einer `RuleMark` auf der Y-Achse, die an die Variable `dailyGoal` (in Litern) gebunden ist.
