@@ -29,6 +29,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 *Alle funktionalen Tests bezüglich Timer, Multi-Monitor, CSV-Export und Reset-Logik wurden erfolgreich re-validiert (Regression Test).*
 
 ### TC-07: Adaptive Icon-Größe (Scaling Test)
+
 | ID | TC-07 |
 | :--- | :--- |
 | **Testziel** | Validierung der dynamischen Verkleinerung der Icons bei kleinen Glasgrößen. |
@@ -37,6 +38,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 | **Status** | ✅ Bestanden |
 
 ### TC-08: UI-Statuswechsel (Goal Reach)
+
 | ID | TC-08 |
 | :--- | :--- |
 | **Testziel** | Visuelle Bestätigung der Zielerreichung im Overlay. |
@@ -45,6 +47,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 | **Status** | ✅ Bestanden |
 
 ### TC-09: Alignment-Check (Settings View)
+
 | ID | TC-09 |
 | :--- | :--- |
 | **Testziel** | Überprüfung der macOS-Konformität des neuen Layouts. |
@@ -52,6 +55,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 | **Status** | ✅ Bestanden |
 
 ### TC-10: Grenzwertanalyse (Eingabevalidierung)
+
 | ID | TC-10 |
 | :--- | :--- |
 | **Testmethode** | Grenzwertanalyse (Boundary Value Analysis) |
@@ -61,6 +65,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 | **Status** | ✅ Bestanden |
 
 ### TC-11: Entscheidungstabellentest (Overlay-Priorität)
+
 | ID | TC-11 |
 | :--- | :--- |
 | **Testmethode** | Entscheidungstabelle (Decision Table) |
@@ -69,6 +74,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 | **Status** | ✅ Bestanden |
 
 ### TC-12: Error Guessing (Robustheit)
+
 | ID | TC-12 |
 | :--- | :--- |
 | **Testmethode** | Fehlerraten (Error Guessing) |
