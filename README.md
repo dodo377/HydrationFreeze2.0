@@ -1,5 +1,13 @@
 # 💧 HydrationFreeze (macOS)
 
+## Projektdokumentation
+Hier findest du alle relevanten Unterlagen zum Projekt:
+
+* [**Lastenheft**](./LASTENHEFT.md) – Definition der Anforderungen
+* [**Pflichtenheft**](./PFLICHTENHEFT.md) – Technische Umsetzung
+* [**Testdokumentation**](./TESTDOKUMENTATION.md) – Qualitätssicherung & Testprotokolle
+* [**Changelog**](./CHANGELOG.md) – Versionshistorie
+
 **HydrationFreeze** ist ein intelligenter Trink-Reminder für macOS, der Gesundheit zur Priorität macht. Die App unterbricht den Workflow in festen Intervallen durch ein adaptives Vollbild-Overlay und fördert eine bewusste Pause zur Hydration.
 
 ---
