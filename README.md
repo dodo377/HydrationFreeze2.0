@@ -11,7 +11,7 @@
 ## 📖 Projektdokumentation
 Besuche die **[interaktive Dokumentations-Seite](https://dodo377.github.io/HydrationFreeze2.0/)** für eine saubere Leseansicht:
 
-* [**Lastenheft**](./HydrationFreeze/LASTENHEFT.md) | [**Pflichtenheft**](./HydrationFreeze/PFLICHTENHEFT.md) | [**Testdokumentation**](./HydrationFreeze/TESTDOKUMENTATION.md) | [**Changelog**](./HydrationFreeze/CHANGELOG.md)
+* [**Lastenheft**](./HydrationFreeze/LASTENHEFT.md) | [**Pflichtenheft**](./HydrationFreeze/PFLICHTENHEFT.md) | [**Testdokumentation**](./HydrationFreeze/TESTDOKUMENTATION.md) | [**Changelog**](./HydrationFreeze/CHANGELOG.md) | [**Handbuch**](./HydrationFreeze/HANDBUCH.md)
 
 ---
 
