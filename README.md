@@ -24,6 +24,7 @@ stateDiagram-v2
     Idle --> OverlaySperre: Timer abgelaufen & Ziel offen
     OverlaySperre --> Idle: Wasser geloggt
     Idle --> ZielErreicht: Tagesziel erfüllt
+    
 
 ---
 
