@@ -51,9 +51,14 @@ struct SettingsView: View {
                 Text("Shortcut 'WasserLog' scannen").font(.caption).foregroundColor(.secondary)
             }
             Spacer()
-            if let qr = generateQRCode(from: "shortcuts://run-shortcut?name=WasserLog") {
-                Image(nsImage: qr).resizable().interpolation(.none).frame(width: 60, height: 60).background(Color.white).cornerRadius(4)
-            }
+            Image("QRCode")
+                .resizable()
+                .interpolation(.none)
+                .scaledToFit()
+                .frame(width: 65, height: 65)
+                .background(Color.white)
+                .cornerRadius(8)
+                
         }.padding().background(Color.gray.opacity(0.1)).cornerRadius(10)
     }
 
@@ -61,45 +66,27 @@ struct SettingsView: View {
         let data = historyJSON.data(using: .utf8) ?? Data()
         var history = (try? JSONDecoder().decode([HydrationLog].self, from: data)) ?? []
         
-        // Berechne den aktuellen Stand von HEUTE
         let todayAmount = Double(glassesDrunk) * 0.2
         let today = Date()
         
-        // Prüfen, ob der letzte Eintrag in der Historie schon von heute ist
         if let lastIndex = history.indices.last,
            Calendar.current.isDate(history[lastIndex].date, inSameDayAs: today) {
-            // Falls ja, aktualisiere den Wert (falls du z.B. gerade getrunken hast)
             history[lastIndex] = HydrationLog(date: today, amount: todayAmount)
         } else {
-            // Falls heute noch gar nicht in der Historie ist, füge es für die Anzeige hinzu
             history.append(HydrationLog(date: today, amount: todayAmount))
         }
         
         return history
     }
-    
-    func generateQRCode(from string: String) -> NSImage? {
-        let data = string.data(using: .ascii)
-        let filter = CIFilter.qrCodeGenerator()
-        filter.setValue(data, forKey: "inputMessage")
-        if let output = filter.outputImage {
-            let context = CIContext()
-            if let cgImage = context.createCGImage(output, from: output.extent) {
-                return NSImage(cgImage: cgImage, size: NSSize(width: 60, height: 60))
-            }
-        }
-        return nil
-    }
 
     func exportCSV() {
-        let history = getHistory() // Nutzt jetzt die kombinierte Liste inkl. heute
+        let history = getHistory()
         var csv = "Datum;Liter\n"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         
         for entry in history {
-            // Formatiert die Liter-Zahl mit Komma für Excel/Numbers
             let amountString = String(format: "%.1f", entry.amount).replacingOccurrences(of: ".", with: ",")
             csv += "\(dateFormatter.string(from: entry.date));\(amountString)\n"
         }

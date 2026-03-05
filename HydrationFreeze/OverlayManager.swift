@@ -1,6 +1,5 @@
 import SwiftUI
 import AppKit
-import CoreImage.CIFilterBuiltins
 internal import Combine
 
 class OverlayManager {
@@ -59,7 +58,6 @@ struct OverlayView: View {
     var onFinished: () -> Void
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
-    // Liste der Motivationssprüche
     let quotes = [
         "Sehr gut! Dein Körper dankt es dir. 💧",
         "Bleib hydriert! Dein Fokus wird schärfer. 🧠",
@@ -154,14 +152,16 @@ struct OverlayView: View {
 
     private var qrAndProgress: some View {
         VStack(spacing: 20) {
-            if let qrImage = generateQRCode(from: "shortcuts://run-shortcut?name=WasserLog") {
-                Image(nsImage: qrImage)
-                    .resizable()
-                    .interpolation(.none)
-                    .frame(width: 90, height: 90)
-                    .background(Color.white)
-                    .cornerRadius(8)
-            }
+            Image("QRCode")
+                .resizable()
+                .interpolation(.none)
+                .scaledToFit()
+                .frame(width: 100, height: 100) // Etwas größer für bessere Scanbarkeit
+                .background(Color.white)
+                .cornerRadius(12)
+                .padding(4)
+                .background(Color.white) // Weißer Rand für besseren Kontrast
+                .cornerRadius(16)
 
             ProgressView(value: progressFraction)
                 .tint(.blue)
@@ -191,7 +191,6 @@ struct OverlayView: View {
         }
     }
 
-    // Funktion zum Aktualisieren der Nachricht
     func updateMessage() {
         if glassesDrunk >= 10 {
             motivationMessage = "Wahnsinn! Du bist über dem Ziel! 🏆"
@@ -200,26 +199,8 @@ struct OverlayView: View {
         }
     }
     
-    // Adds one glass (0.2L) and updates the message
     private func addWater() {
         glassesDrunk += 1
         updateMessage()
     }
-
-    // QR-Generator (wie gehabt...)
-    func generateQRCode(from string: String) -> NSImage? {
-        let data = string.data(using: .ascii)
-        let filter = CIFilter.qrCodeGenerator()
-        filter.setValue(data, forKey: "inputMessage")
-        if let outputImage = filter.outputImage {
-            let transform = CGAffineTransform(scaleX: 10, y: 10)
-            let scaledImage = outputImage.transformed(by: transform)
-            let context = CIContext()
-            if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
-                return NSImage(cgImage: cgImage, size: NSSize(width: 90, height: 90))
-            }
-        }
-        return nil
-    }
 }
-
