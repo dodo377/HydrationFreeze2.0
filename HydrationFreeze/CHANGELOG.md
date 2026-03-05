@@ -5,11 +5,24 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.1] (Aktuelle Version)
+## [1.4.2] - 2026-03-05
 ### Hinzugefügt
-- Einstellbare Glasgröße (100ml - 1000ml).
-- Individuelles Tagesziel-Limit (dynamische RuleMark im Chart).
-- Automatische Berechnung der benötigten Glasanzahl in den Einstellungen.
+- **Adaptive UI-Skalierung:** Einführung einer dynamischen Icon-Berechnung (`dynamicIconSize`). Die Wassertropfen im Overlay passen ihre Größe nun automatisch an das Verhältnis von Tagesziel und Glasgröße an, um eine perfekte Darstellung ohne Scrollen zu gewährleisten.
+- **Intelligentes Grid-Layout:** Das Overlay-System berechnet nun die exakte Anzahl der benötigten Symbole basierend auf dem Quotienten aus Zielvolumen und Glasvolumen.
+
+### Geändert
+- **macOS Design-Refinement:** Komplette Überarbeitung der `SettingsView` unter Verwendung von `LabeledContent`. Dies sorgt für ein exaktes Alignment der Labels und Steuerelemente gemäß den Apple Human Interface Guidelines.
+- **Erweiterte Symbolik:** Dynamischer Wechsel des Header-Icons auf einen Erfolgs-Status (`checkmark.circle.fill`), sobald das Tagesziel erreicht wurde.
+- **Optimierte Button-Interaktion:** Buttons in den Einstellungen nutzen nun `.buttonStyle(.borderless)` für ein dezenteres, systemkonformes Erscheinungsbild.
+
+### Behoben
+- **Layout-Clutter:** Fix eines Fehlers, bei dem die UI-Elemente im Overlay bei hohen Tageszielen oder sehr kleinen Glasgrößen über den Bildschirmrand hinausragten.
+
+## [1.4.1]
+### Hinzugefügt
+- **Individuelle Glasgrößen:** Einstellbare Glasgröße (100ml - 1000ml).
+- **Dynamische Zielsetzung:** Individuelles Tagesziel-Limit (dynamische RuleMark im Chart).
+- **Intelligente Berechnung:** Automatische Berechnung der benötigten Glasanzahl in den Einstellungen.
 
 ### Geändert
 - Overlay-Logik von statischen 200ml auf dynamische `@AppStorage`-Werte umgestellt.
@@ -17,47 +30,39 @@ und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.
 - Refactoring der `SettingsView` für bessere Übersicht.
 
 ## [1.4.0]
-
 ### Hinzugefügt
-- **Unbegrenztes Tracking (Bonus-Gläser):** Einführung eines permanent sichtbaren, grünen Plus-Buttons (`plus.circle.fill`), um Wasser über das ursprüngliche 2,0L-Tagesziel hinaus zu loggen. Das Design bleibt dabei konsistent zu den Standard-Gläsern.
-- **Echtzeit-Statistiken:** Die Chart-Ansicht und der CSV-Export berechnen nun zur Laufzeit den heutigen Live-Wert (`glassesDrunk`) in Kombination mit der Historie. Der aktuelle Tagesfortschritt (z.B. 1,4 L) ist ab sofort sofort sichtbar, ohne auf den Tageswechsel warten zu müssen.
-- **Statischer QR-Code:** Die rechenintensive, dynamische QR-Code-Generierung (`CIFilter`) wurde durch ein performantes, statisches Bild-Asset (via qr.io) ersetzt, um das UI-Design aufzuwerten.
-- **Wake-from-Sleep Erkennung:** Der `AppDelegate` nutzt nun `NSWorkspace.didWakeNotification`, um den automatischen Tages-Reset direkt nach dem Aufwecken des Macs (z. B. am nächsten Morgen) zuverlässig auszuführen.
-- **Umfassende Testdokumentation:** Einführung einer ISTQB-konformen Testdokumentation zur Qualitätssicherung.
+- **Unbegrenztes Tracking (Bonus-Gläser):** Einführung eines permanent sichtbaren, grünen Plus-Buttons (`plus.circle.fill`), um Wasser über das ursprüngliche Tagesziel hinaus zu loggen.
+- **Echtzeit-Statistiken:** Die Chart-Ansicht und der CSV-Export berechnen nun zur Laufzeit den heutigen Live-Wert in Kombination mit der Historie.
+- **Statischer QR-Code:** Die rechenintensive, dynamische QR-Code-Generierung wurde durch ein performantes, statisches Bild-Asset ersetzt.
+- **Wake-from-Sleep Erkennung:** Der `AppDelegate` nutzt nun `NSWorkspace.didWakeNotification` für einen zuverlässigen Tages-Reset nach dem Ruhezustand.
 
 ### Behoben
-- **Kritischer Datums-Bug (Reset-Logik):** Der Tagesvergleich nutzt nun ein festes ISO-8601 Format (`yyyy-MM-dd`) anstelle von `DateFormatter.localizedString`. Dies behebt den Fehler, dass der Reset bei unterschiedlichen macOS-Spracheinstellungen nicht fehlerfrei ausgelöst wurde.
-- **Sicherer Datenspeicher:** Ein potenziell absturzverursachendes "Force Unwrap" (`!`) beim Decodieren der `historyJSON` wurde entfernt.
-- **CSV-Formatierung:** Liter-Werte im CSV-Export verwenden jetzt das Komma `,` statt dem Punkt `.`, damit sie in europäischen Tabellenkalkulationen (Excel/Numbers) sofort als Zahl erkannt werden.
+- **Kritischer Datums-Bug (Reset-Logik):** Der Tagesvergleich nutzt nun ein festes ISO-8601 Format, was Fehler bei unterschiedlichen Systemsprachen behebt.
+- **CSV-Formatierung:** Liter-Werte im CSV-Export verwenden jetzt das Komma `,` für bessere Kompatibilität mit Excel/Numbers im europäischen Raum.
 
-## [1.3.0] - Dokumentations- & Logik-Sync
-
+## [1.3.0]
 ### Hinzugefügt
-- **Vollständiger Dokumentations-Abgleich:** Das Pflichtenheft wurde exakt an die Anforderungen des Lastenhefts angepasst.
-- **Traceability Matrix:** Hinzufügen von Test-Szenarien und Abnahmekriterien in das Pflichtenheft, um die funktionalen Anforderungen überprüfbar zu machen.
-- **Erweiterter CSV-Export:** Integration des `NSSavePanel` für einen nutzerfreundlichen Dialog zur Speicherung der Trinkhistorie.
+- **Vollständiger Dokumentations-Abgleich:** Pflichtenheft exakt an Lastenheft angepasst.
+- **Traceability Matrix:** Test-Szenarien und Abnahmekriterien im Pflichtenheft integriert.
+- **Erweiterter CSV-Export:** Integration des `NSSavePanel` für einen nutzerfreundlichen Speicher-Dialog.
 
 ### Geändert
-- **Datenhygiene:** Die Logik der Historie wurde so angepasst, dass Einträge, die älter als 14 Tage sind, automatisch aus den `UserDefaults` gelöscht werden (`history.removeFirst()`).
+- **Datenhygiene:** Automatische Löschung von Historien-Einträgen, die älter als 14 Tage sind.
 
-## [1.2.0] - Codebase Refactoring
-
+## [1.2.0]
 ### Geändert
-- **Zentralisierung der Logik:** Die Steuerung des Overlays und der Fenster-Instanzen wurde in den `OverlayManager` ausgelagert.
-- **Multi-Monitor-Support:** Die Schleife über `NSScreen.screens` wurde optimiert, um sicherzustellen, dass das `.screenSaver` Level-Panel alle aktiven Displays abdeckt.
-- **Haptisches Feedback:** Integration des `NSHapticFeedbackManager` zur Bestätigung von Klicks auf die Wassertropfen.
+- **Zentralisierung der Logik:** Auslagerung der Fenster-Steuerung in den `OverlayManager`.
+- **Multi-Monitor-Support:** Optimierung der Bildschirmschleife für lückenlose Abdeckung aller aktiven Displays.
+- **Haptisches Feedback:** Integration des `NSHapticFeedbackManager` bei Interaktion mit Wassertropfen.
 
-## [1.1.0] - Zukunftsplanung & Wartung
-
+## [1.1.0]
 ### Hinzugefügt
-- **Wartungskonzept:** Kapitel zur Fehlerprotokollierung und zum Monitor-Wechsel-Management in die Dokumentation aufgenommen.
-- **Projekt-Roadmap:** Planung zukünftiger Erweiterungen definiert (Apple Watch Integration, iCloud Sync via CloudKit, dynamische Ziele nach Körpergewicht und macOS-Widgets).
+- **Wartungskonzept:** Dokumentation zur Fehlerprotokollierung und zum Monitor-Management.
+- **Projekt-Roadmap:** Planung für Apple Watch Integration und iCloud Sync.
 
-## [1.0.0] - Initiale Version
-
+## [1.0.0]
 ### Hinzugefügt
-- **Basis-Funktionalität:** Menüleisten-App (Agent-App ohne Dock-Icon) zur Erinnerung an die Wasseraufnahme.
-- **Overlay-Sperre:** Zeitgesteuerte Vollbild-Verdunkelung mit einstellbaren Intervallen (5-120 Min.) und Sperrdauern (5-60 Sek.).
-- **10-Gläser-Tracker:** Interaktives Klicken von 10 Wassertropfen (à 0,2L) zum Erreichen des 2,0L Tagesziels.
-- **Motivations-Engine:** 10 dynamische Sprüche, die sich je nach Fortschritt ändern.
-- **Basis-Statistik:** Balkendiagramm via Swift Charts zur Anzeige der gespeicherten Historie.
+- **Basis-Funktionalität:** Menüleisten-App zur Erinnerung an die Wasseraufnahme.
+- **Overlay-Sperre:** Zeitgesteuerte Vollbild-Verdunkelung (5-120 Min. Intervall).
+- **Interaktiver Tracker:** Visuelle Erfassung via Wassertropfen-Icons.
+- **Basis-Statistik:** Balkendiagramm via Swift Charts.
