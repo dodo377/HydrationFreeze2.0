@@ -1,3 +1,5 @@
+[← Zurück zur Übersicht](../README.md)
+
 # Pflichtenheft: HydrationFreeze
 
 **Projekt:** HydrationFreeze (Technische Spezifikation)  
@@ -63,3 +65,5 @@
 ## 4. Wartung & Roadmap
 - **v1.5.0:** Integration von Push-Notifications bei verpassten Intervallen.
 - **v1.6.0:** Optionale Anbindung an die Apple Health API (macOS).
+
+[← Zurück zur Übersicht](../README.md)

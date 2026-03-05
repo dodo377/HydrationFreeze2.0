@@ -1,3 +1,5 @@
+[← Zurück zur Übersicht](../README.md)
+
 # Changelog
 
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
@@ -66,3 +68,5 @@ und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.
 - **Overlay-Sperre:** Zeitgesteuerte Vollbild-Verdunkelung (5-120 Min. Intervall).
 - **Interaktiver Tracker:** Visuelle Erfassung via Wassertropfen-Icons.
 - **Basis-Statistik:** Balkendiagramm via Swift Charts.
+
+[← Zurück zur Übersicht](../README.md)

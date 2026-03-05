@@ -1,3 +1,5 @@
+[← Zurück zur Übersicht](../README.md)
+
 # Testdokumentation: HydrationFreeze
 
 **Version:** 1.4.2 | **Referenz:** Lastenheft v1.4.2, Pflichtenheft v1.4.2  
@@ -116,3 +118,5 @@ Alle Testfälle wurden erfolgreich abgeschlossen. Besonders hervorzuheben ist di
 
 ---
 *Status: Keine kritischen Defekte (Showstopper) verbleibend.*
+
+[← Zurück zur Übersicht](../README.md)

@@ -1,3 +1,5 @@
+[← Zurück zur Übersicht](../README.md)
+
 # Lastenheft: HydrationFreeze
 
 **Projekt:** macOS Hydration Tracker mit Overlay-Sperre  
@@ -42,3 +44,5 @@ Förderung der Gesundheit am Arbeitsplatz durch eine App, die den Nutzer in fest
 * **[ /NF30/ ] Datenschutz & Offline-First** Es darf keine Übertragung von Trinkdaten an externe Server stattfinden. Die App muss vollständig ohne Internetverbindung funktionsfähig sein.
 
 * **[ /NF40/ ] Visuelle Ergonomie** Die Benutzeroberfläche muss auf unterschiedlichen Bildschirmauflösungen und Monitor-Konfigurationen lesbar und bedienbar bleiben. Das Overlay darf den Nutzer visuell nicht überfordern (Vermeidung von "Clutter").
+
+[← Zurück zur Übersicht](../README.md)
