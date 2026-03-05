@@ -125,3 +125,11 @@ Zur Sicherstellung der Softwarequalität wurden spezifische Testmethoden (Black-
 - **v1.6.0:** Optionale Anbindung an die Apple Health API (macOS).
 
 [← Zurück zur Übersicht](../README.md)
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true });
+  // Dieser kleine Zusatz erzwingt das Rendering für GitHub Pages
+  window.onload = function() {
+    mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+  };
+</script>
