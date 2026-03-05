@@ -4,7 +4,7 @@
 
 **Version:** 1.4.2 | **Referenz:** Lastenheft v1.4.2, Pflichtenheft v1.4.2  
 **Standard:** Angelehnt an ISTQB (IEEE 829)  
-**Status:** Validiert für Release v1.4.2
+**Status:** Bedingt freigegeben (siehe DEF-06)
 
 ---
 
@@ -142,7 +142,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 
 | Test-Lauf | Testfall-ID | Datum | Tester | Ergebnis | Bemerkung |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **v1.4.2-Regression-Core** | **TC-01 bis TC-04** | 05.03.2026 | [D. Obendorf] | **Fail** | Basisfunktionen stabil. Sperre wird nicht aufgehoben|
+| **v1.4.2-Regression-Core** | **TC-01 bis TC-04** | 05.03.2026 | [D. Obendorf] | **Fail** | Kernfunktionen weitgehend stabil; Regression TC-04 offen (siehe DEF-06). |
 | **v1.4.2-Regression-Data** | **TC-05** | 05.03.2026 | [D. Obendorf] | **Pass** | Persistenz & Reset-Logik verifiziert. |
 | **v1.4.2-Regression-UI** | **TC-06** | 05.03.2026 | [D. Obendorf] | **Pass** | Chart-Skalierung (Regression) stabil. |
 | **v1.4.2-New-Scaling** | **TC-07** | 05.03.2026 | [D. Obendorf] | **Pass** | **Fix bestätigt:** Adaptive Skalierung aktiv. |
