@@ -62,7 +62,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 | **Testziel** | Validierung der Dateneingabe über die Benutzeroberfläche. |
 | **Testschritte** | Klick auf ein aktives Glas-Icon im Overlay. |
 | **Erwartetes Ergebnis** | 1. `glassesDrunk` wird um +1 erhöht. <br> 2. Die `OverlayView` schließt sich sofort (Sperre aufgehoben). |
-| **Status** | ✅ Bestanden (Regression) |
+| **Status** | ⚠️ Fail (Regression) |
 
 #### TC-05: Daten-Persistenz (UserDefaults)
 
@@ -142,7 +142,7 @@ Dieses Dokument beschreibt die Teststrategie für Version 1.4.2. Der Fokus liegt
 
 | Test-Lauf | Testfall-ID | Datum | Tester | Ergebnis | Bemerkung |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **v1.4.2-Regression-Core** | **TC-01 bis TC-04** | 05.03.2026 | [D. Obendorf] | **Pass** | Basisfunktionen & Sperre stabil. |
+| **v1.4.2-Regression-Core** | **TC-01 bis TC-04** | 05.03.2026 | [D. Obendorf] | **Fail** | Basisfunktionen stabil. Sperre wird nicht aufgehoben|
 | **v1.4.2-Regression-Data** | **TC-05** | 05.03.2026 | [D. Obendorf] | **Pass** | Persistenz & Reset-Logik verifiziert. |
 | **v1.4.2-Regression-UI** | **TC-06** | 05.03.2026 | [D. Obendorf] | **Pass** | Chart-Skalierung (Regression) stabil. |
 | **v1.4.2-New-Scaling** | **TC-07** | 05.03.2026 | [D. Obendorf] | **Pass** | **Fix bestätigt:** Adaptive Skalierung aktiv. |
@@ -165,6 +165,7 @@ Alle Testfälle wurden erfolgreich abgeschlossen. Besonders hervorzuheben ist di
 | **DEF-03** | Git-Divergenz (Deployment). | - | ✅ Behoben | Force-Alignment der Tags & Historie. |
 | **DEF-04** | Potenzielle Division durch Null. | TC-10 | ✅ Behoben | Stepper-Validierung (min. 100ml). |
 | **DEF-05** | Sperre fehlte bei Zielerreichung. | TC-11 | ✅ Behoben | Logik-Update für unabhängige Sperren. |
+| DEF-06 | UI-Interaktion: Klick auf Tropfen-Icons loggt Volumen, beendet aber nicht das Overlay-Panel. | TC-04 | ❌ Offen | Event-Handler in `OverlayView` muss `dismiss()` oder `NSApp.stopModal() triggern. |
 
 ---
 *Status: Keine kritischen Defekte (Showstopper) verbleibend.*
