@@ -49,16 +49,21 @@
 
 ---
 
-## 3. Test-Szenarien & Abnahme
+## 3. Test-Szenarien & Abnahme (Qualitätssicherung)
 
-| Referenz | Testfall | Erwartetes Ergebnis | Status |
-| :--- | :--- | :--- | :--- |
-| **PF10 / LF30** | Ziel: 4L, Glas: 200ml (20 Icons) | Icons werden automatisch auf 25pt verkleinert; Overlay bleibt übersichtlich. | ✅ |
-| **PF40 / LF35** | Öffnen der Einstellungen | Alle Beschriftungen sind linksbündig ausgerichtet; Stepper rechtsbündig. | ✅ |
-| **PF20 / LF60** | Zielerreichung im Overlay | Header-Icon wechselt zu grünem Haken; Text gratuliert zum Erfolg. | ✅ |
-| **PF10 / LF10** | Änderung Glasgröße auf 500ml | Overlay zeigt pro Glas 0,5L Schritte an. | ✅ |
-| **PF30 / LF20** | Tagesziel auf 3,0L erhöhen | Ziellinie im Chart wandert auf 3.0. | ✅ |
-| **PF40 / LF70** | CSV-Export | Valide Datei mit korrekt berechneten Litern. | ✅ |
+Zur Sicherstellung der Softwarequalität wurden spezifische Testmethoden (Black-Box-Testing) angewandt:
+
+| Referenz | Testmethode | Szenario / Eingabe | Erwartetes Ergebnis | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **PF10 / LF30** | Äquivalenzklasse | Ziel: 4L, Glas: 200ml (20 Icons) | Icons skalieren auf 25pt; Layout bleibt stabil. | ✅ |
+| **PF40 / LF35** | UI-Regression | Öffnen der Einstellungen | LabeledContent-Alignment gemäß macOS HIG. | ✅ |
+| **PF20 / LF60** | Zustandswechsel | Zielerreichung im Overlay | Header wechselt zu grünem Haken & Checkmark. | ✅ |
+| **PF10 / TC-10** | **Grenzwertanalyse** | Ziel: 5L, Glas: 100ml (50 Icons) | Korrekte Berechnung ($V_{total} = 5.0L$); ScrollView aktiv. | ✅ |
+| **PF10 / TC-11** | **Entscheidungstabelle** | Timer abgelaufen + Ziel bereits erreicht | Sperre triggert trotzdem (Pause-Funktion); Erfolg angezeigt. | ✅ |
+| **PF10 / TC-12** | **Robustheitstest** | Monitor-Trennung während Sperre | `OverlayManager` berechnet Layout sofort neu. | ✅ |
+| **PF40 / LF70** | Datenvalidierung | CSV-Export (EU-Format) | Valide Datei; Dezimal-Komma statt Punkt genutzt. | ✅ |
+
+> **Hinweis:** Eine detaillierte Aufschlüsselung der Testdurchführung inklusive Zeitstempel und Defect-Reports findet sich in der separaten [Testdokumentation](./TESTDOKUMENTATION.md).
 
 ---
 
