@@ -165,7 +165,7 @@ Alle Testfälle wurden erfolgreich abgeschlossen. Besonders hervorzuheben ist di
 | **DEF-03** | Git-Divergenz (Deployment). | - | ✅ Behoben | Force-Alignment der Tags & Historie. |
 | **DEF-04** | Potenzielle Division durch Null. | TC-10 | ✅ Behoben | Stepper-Validierung (min. 100ml). |
 | **DEF-05** | Sperre fehlte bei Zielerreichung. | TC-11 | ✅ Behoben | Logik-Update für unabhängige Sperren. |
-| DEF-06 | UI-Interaktion: Klick auf Tropfen-Icons loggt Volumen, beendet aber nicht das Overlay-Panel. | TC-04 | ❌ Offen | Event-Handler in `OverlayView` muss `dismiss()` oder `NSApp.stopModal() triggern. |
+| DEF-06 | UI-Interaktion: Klick auf Tropfen-Icons loggt Volumen, beendet aber nicht das Overlay-Panel. | TC-04 | ❌ Offen | Event-Handler in `OverlayView` muss `dismiss()` oder `NSApp.stopModal()` triggern. |
 
 ---
 *Status: Keine kritischen Defekte (Showstopper) verbleibend.*
