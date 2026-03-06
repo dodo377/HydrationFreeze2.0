@@ -2,7 +2,7 @@
 
 # 📘 Benutzerhandbuch: HydrationFreeze
 
-**Version:** 1.4.2  
+**Version:** 1.4.3  
 **Plattform:** macOS 13.0+  
 **Projekt:** HydrationFreeze – Konsequentes Trink-Management.
 
@@ -18,7 +18,7 @@ Willkommen bei **HydrationFreeze**! Diese App wurde entwickelt, um dich nicht nu
 ## 2. Erste Schritte
 
 ### 2.1 Installation
-1. Lade das neueste Release `HydrationFreeze_v1.4.2.zip` herunter.
+1. Lade das neueste Release `HydrationFreeze_v1.4.3.zip` herunter.
 2. Entpacke die Datei und ziehe die App in deinen **Programme-Ordner**.
 3. Starte die App. Das Icon erscheint in der **Menüleiste** (oben rechts).
 
@@ -38,11 +38,9 @@ Ein Klick auf das Tropfen-Icon öffnet das Hauptmenü:
 
 ### 3.2 Das Overlay (Die Sperre)
 Sobald dein eingestellter Timer abläuft, erscheint das Overlay auf **allen angeschlossenen Monitoren**.
-
-
-* **Logging:** Jeder Klick auf einen Wassertropfen registriert ein getrunkenes Glas.
-* **Beenden der Sperre:** Entweder 30 Sekunden (default eingestellt) Warten oder auf ein Symbol im Dock klicken. 
-* **Skalierung (v1.4.2):** Die App berechnet die Icon-Größe automatisch. Wenn du viele kleine Gläser trinkst, werden die Icons kleiner dargestellt, um den Bildschirm optimal zu nutzen.
+* **Logging & Auto-Close (v1.4.3):** Jeder Klick auf einen Wassertropfen registriert ein getrunkenes Glas. Das Overlay schließt sich danach **sofort automatisch**, damit du direkt weiterarbeiten kannst.
+* **Präzise Anzeige (v1.4.3):** Die App unterstützt nun zwei Nachkommastellen. Wenn du eine Glasgröße von 250ml wählst, wird dies mathematisch korrekt als 0.25L, 0.50L, 0.75L usw. angezeigt. 
+* **Skalierung :** Die App berechnet die Icon-Größe automatisch. Wenn du viele kleine Gläser trinkst, werden die Icons kleiner dargestellt, um den Bildschirm optimal zu nutzen.
 
 ### 3.3 Statistiken (Swift Charts)
 In der Statistik-Ansicht wird dein Fortschritt visualisiert:
@@ -74,9 +72,9 @@ In den Einstellungen findest du einen QR-Code. Scanne diesen mit deinem iPhone, 
 
 ## 6. FAQ
 
-**Frage: Wie werde ich die Sperre los, ohne zu trinken?** *Antwort: HydrationFreeze ist auf Disziplin ausgelegt. Ein Klick auf ein Glas ist der einzige Weg, das Overlay zu schließen. In Notfällen kann die App über `Cmd + Q` beendet werden.*
+**Frage: Wie werde ich die Sperre los, ohne zu trinken?** *Antwort: HydrationFreeze ist auf Disziplin ausgelegt. Ein Klick auf ein Glas-Symbol ist der vorgesehene Weg, das Overlay zu schließen. Seit v1.4.3 wird die Sperre dadurch unmittelbar beendet.*
 
-**Frage: Wann werden die Daten zurückgesetzt?** *Antwort: Automatisch um Mitternacht.*
+**Frage: Wann werden die Daten zurückgesetzt?** *Antwort: Dank intelligenter Systemüberwachung erfolgt der Reset exakt um Mitternacht (00:00 Uhr) oder sofort beim ersten Aufwachen deines Macs an einem neuen Tag.*
 
 ---
 *Support & Feedback: [GitHub Repository](https://github.com/dodo377/HydrationFreeze2.0).*
