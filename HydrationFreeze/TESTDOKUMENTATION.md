@@ -2,7 +2,7 @@
 
 # Testdokumentation: HydrationFreeze
 
-**Version:** 1.4.2 | **Referenz:** Lastenheft v1.4.2, Pflichtenheft v1.4.2  
+**Version:** 1.4.3 | **Referenz:** Lastenheft v1.4.3, Pflichtenheft v1.4.3  
 **Standard:** ISTQB-Standard (basierend auf IEEE 829)  
 **Status:** ✅ Freigegeben
 
@@ -11,10 +11,10 @@
 ## 1. Testkonzept (Test Plan)
 
 ### 1.1 Einführung & Testumfang
-Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schwerpunkt liegt auf der **visuellen Integrität**, der **adaptiven UI-Skalierung** bei variablen Konfigurationen sowie der Konformität mit den macOS Design-Richtlinien (Human Interface Guidelines).
+Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.3. Der Schwerpunkt liegt auf der **visuellen Integrität**, der **adaptiven UI-Skalierung** bei variablen Konfigurationen sowie der Konformität mit den macOS Design-Richtlinien (Human Interface Guidelines).
 
 ### 1.2 Testobjekte
-- **HydrationFreeze App** (macOS) - Version 1.4.2
+- **HydrationFreeze App** (macOS) - Version 1.4.3
 - **UI-Komponenten:** Adaptive `OverlayView`, überarbeitete `SettingsView` (SwiftUI).
 
 ### 1.3 Übergeordnete Testziele
@@ -39,7 +39,9 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schw
 
 ![V-Modell](DocumentationAssets/v-modell_hydrationfreeze_v1.4.2.png)
 
-### 2.2 Spezifische Tests v1.4.2 (Adaptive UI & Skalierung)
+### 2.2 Spezifische Tests (Adaptive UI & Skalierung)
+ 
+##### v1.4.2
 
 #### TC-07: Adaptive Icon-Größe (Scaling Test)
 - **Beschreibung:** Validierung der dynamischen Verkleinerung der Icons bei kleinen Glasgrößen.
@@ -73,6 +75,8 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schw
 - **Szenario:** Physische Monitor-Trennung (Hotplugging) bei aktivem Overlay.
 - **Erwartetes Ergebnis:** `OverlayManager` berechnet Layout sofort neu; Sperre bleibt lückenlos erhalten.
 - **Status:** ✅ Bestanden
+
+##### v1.4.3
  
 #### TC-13: Tageswechsel-Reset (Regession)
 - **Erwartetes Ergebnis:** Zähler springt um 00:00 Uhr (oder bei System-Wake) auf 0; Historie wird archiviert.
@@ -91,8 +95,8 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schw
 | **v1.4.2-REG** | **TC-01 – TC-06** | 05.03.2026 | [D. Obendorf] | **Fail** | Regression TC-04 fehlgeschlagen (DEF-06). |
 | **v1.4.2-UI** | **TC-07 – TC-09** | 05.03.2026 | [D. Obendorf] | **Pass** | Adaptive Skalierung & Alignment erfolgreich. |
 | **v1.4.2-SPEC** | **TC-10 – TC-12** | 05.03.2026 | [D. Obendorf] | **Pass** | Grenzwerte & Robustheit (Hotplugging) stabil. |
-| **v1.4.2-REG** | **TC-13** | 06.03.2026 | [D. Obendorf] | **Pass** | TC-13 erfolgreich verifiziert. |
-| **v1.4.2-FINAL** | **TC-04, TC-14** | 06.03.2026 | [D. Obendorf] | **Pass** | Alle kritischen Fehler (Overlay, Rundung) behoben. |
+| **v1.4.3-REG** | **TC-13** | 06.03.2026 | [D. Obendorf] | **Pass** | TC-13 erfolgreich verifiziert. |
+| **v1.4.3-FINAL** | **TC-04, TC-14** | 06.03.2026 | [D. Obendorf] | **Pass** | Alle kritischen Fehler (Overlay, Rundung) behoben. |
 
 ---
 
