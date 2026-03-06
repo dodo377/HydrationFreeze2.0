@@ -3,8 +3,8 @@
 # Pflichtenheft: HydrationFreeze
 
 **Projekt:** HydrationFreeze (Technische Spezifikation)  
-**Version:** 1.4.2 (Abgeglichen mit Quellcode & Lastenheft v1.4.2)  
-**Status:** Aktiv / Finalisiert für Release v1.4.2
+**Version:** 1.4.3 (Abgeglichen mit Quellcode & Lastenheft v1.4.3)  
+**Status:** Aktiv / Finalisiert für Release v1.4.3
 
 ---
 
@@ -12,11 +12,12 @@
 
 | Version | Datum      | Status | Änderungen | Autor |
 | :--- | :--- | :--- | :--- | :--- |
-| 1.0.0 | 15.02.2024 | Initial | Grundgerüst der technischen Spezifikation (PF10-30). | dodo377 |
-| 1.2.0 | 25.02.2024 | Review | Ergänzung der Statistik-Engine und Swift Charts Logik. | dodo377 |
-| 1.4.0 | 01.03.2024 | Update | Refactoring des Konfigurations-Managements (PF40). | dodo377 |
-| 1.4.1 | 04.03.2024 | Bugfix | Korrektur der Skalierungslogik für Multi-Monitor-Betrieb. | dodo377 |
-| **1.4.2** | **05.03.2024** | **Final** | **UML-Live-Rendering fixiert (Mermaid-JS); Dokumentation für Release finalisiert.** | dodo377 |
+| 1.0.0 | 15.02.2024 | Initial | Grundgerüst der technischen Spezifikation (PF10-30). | D. Obendorf |
+| 1.2.0 | 25.02.2024 | Review | Ergänzung der Statistik-Engine und Swift Charts Logik. | D. Obendorf |
+| 1.4.0 | 01.03.2024 | Update | Refactoring des Konfigurations-Managements (PF40). | D. Obendorf |
+| 1.4.1 | 04.03.2024 | Bugfix | Korrektur der Skalierungslogik für Multi-Monitor-Betrieb. | D. Obendorf |
+| 1.4.2 | 05.03.2024 | Final | UML-Live-Rendering fixiert (Mermaid-JS). | D. Obendorf |
+| **1.4.3** | **06.03.2024** | **Release** | **Präzisions-Update (%.2f), Auto-Close-Logik & NSCalendarDayChanged Reset.** | D. Obendorf |
 
 ---
 
@@ -46,10 +47,11 @@
 
 ### 2.1 [ /PF10/ ] Dynamischer Overlay-Mechanismus
 - **Klasse:** `OverlayManager`.
-- **Umsetzung:** Erzeugung von `NSPanel`-Instanzen mit `styleMask: .borderless` auf dem Level `.screenSaver`.
-- **Multi-Monitor-Support:** Automatisierte Iteration über `NSScreen.screens`.
-- **Adaptive Skalierungslogik (Neu in v1.4.2):** Die `OverlayView` berechnet die Icon-Größe $S_{Icon}$ dynamisch in Abhängigkeit der Gesamtzahl der benötigten Gläser ($n_{Total}$), um die Bildschirmbreite optimal zu nutzen:
+- **Umsetzung:** Erzeugung von `NSPanel`-Instanzen mit `styleMask: [.borderless, .fullSizeContentView]` auf dem Level `.screenSaver`.
+- **Adaptive Skalierungslogik:** Die `OverlayView` berechnet die Icon-Größe $S_{Icon}$ dynamisch in Abhängigkeit der Gesamtzahl der benötigten Gläser ($n_{Total}$), um die Bildschirmbreite optimal zu nutzen:
   $$S_{Icon} = \begin{cases} 45 & \text{wenn } n \leq 8 \\ 35 & \text{wenn } 8 < n \leq 12 \\ 25 & \text{wenn } 12 < n \leq 20 \\ 20 & \text{wenn } n > 20 \end{cases}$$
+
+### Sequenzdiagramm: Initialisierung des Sperrbildschirms
   
 ```mermaid
 sequenceDiagram
@@ -64,7 +66,6 @@ sequenceDiagram
     Note over OM: Start Lock-Prozess
 
     OM->>Calc: Sende n_Total (Gläser für Ziel)
-    Note right of Calc: Anwendung der Fallunterscheidung<br/>(45pt, 35pt, 25pt, 20pt)
     Calc-->>OM: Return S_Icon (optimierte Größe)
 
     OM->>NS: Erfrage alle aktiven Displays
@@ -75,7 +76,7 @@ sequenceDiagram
         Note over UI: Level: .screenSaver (Topmost)
     end
 
-OM-->>App: Status: System gesperrt
+    OM-->>App: Status: System gesperrt
 ```
 
 
@@ -83,6 +84,11 @@ OM-->>App: Status: System gesperrt
 - **Dynamisches Grid:** Nutzung von `max(glassesNeededForGoal, glassesDrunk)` für die Generierung der Button-Reihe. Dies stellt sicher, dass das Ziel visualisiert wird, auch wenn noch nichts getrunken wurde.
 - **Responsives Design:** Einbettung der `glassesRow` in eine horizontale `ScrollView` und dynamisches Spacing, um Überlappungen bei extremen Konfigurationen (z. B. 100ml Gläser bei 5L Ziel) zu verhindern.
 - **Erfolgs-Feedback:** Bedingte Formatierung des Headers; Wechsel zu `.green` und `checkmark.circle.fill` bei Erreichung von `isGoalReached`.
+- **Numerische Präzision (Neu in v1.4.3):** Zur Unterstützung von Glasgrößen wie 250ml nutzt die UI eine String-Formatierung von `%.2f`. Dies stellt eine mathematisch korrekte Anzeige sicher (0.25L, 0.50L, 0.75L).
+- **Zustands-Feedback:** Icons nutzen `symbolEffect(.pulse)`, um das aktuell zu loggende Glas visuell hervorzuheben.
+- **Interaktions-Trigger (Neu in v1.4.3):** Das Panel schließt sich unmittelbar nach dem Aufruf der `addWater()`-Funktion. Dies geschieht über ein delegiertes `onFinished()`-Signal an den OverlayManager.
+
+### Zustandsdiagramm: App-Logik & User-Interaktion
 
 ```mermaid
 stateDiagram-v2
@@ -125,6 +131,37 @@ stateDiagram-v2
 - **CSV-Schnittstelle:** Nutzung von `NSSavePanel`. Export-Format: `Datum;Liter` (Dezimal-Komma-Konvertierung für EU-Excel-Kompatibilität).
 - **Mobile-Sync:** Integration des statischen QR-Code Assets zur Kopplung mit dem iOS-System.
 
+### 2.6 [ /PF60/ ] System-Ereignisse & Reset-Logik (Neu in v1.4.3)
+- **Klasse:** ÀppDelegate`.
+- **Automatischer Tages-Reset:** Implementierung von zwei Observer-Mechanismen zur Sicherstellung der Datenintegrität:
+1. `NSCalendarDayChanged`: System-Notifikation, die exakt um 00:00 Uhr triggert.
+2. `didWakeNotification`: Erkennt das Erwachen aus dem Standby und validiert das gespeicherte Datum.
+- **Archivierung:** Vor dem Reset wird der aktuelle Stand (`glassesDrunk`) in ein JSON-Objekt serialisiert und in der 14-Tage-Historie persistiert.
+
+### Sequenzdiagramm: Tageswechsel-Logik
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant S as macOS System
+    participant AD as AppDelegate
+    participant UD as UserDefaults (AppStorage)
+    participant H as JSON History
+
+    S->>AD: Notification: .NSCalendarDayChanged / .didWake
+    AD->>AD: checkNewDay()
+    
+    alt Datum ungleich lastUpdateDay
+        AD->>UD: Hole glassesDrunk
+        AD->>H: Archiviere HydrationLog(yesterday, amount)
+        AD->>UD: Reset glassesDrunk = 0
+        AD->>UD: Setze lastUpdateDay = today
+    else Datum identisch
+        Note over AD: Keine Aktion erforderlich
+    end
+```
+
+
 ---
 
 ## 3. Test-Szenarien & Abnahme (Qualitätssicherung)
@@ -140,6 +177,10 @@ Zur Sicherstellung der Softwarequalität wurden spezifische Testmethoden (Black-
 | **PF10 / TC-11** | **Entscheidungstabelle** | Timer abgelaufen + Ziel bereits erreicht | Sperre triggert trotzdem (Pause-Funktion); Erfolg angezeigt. | ✅ |
 | **PF10 / TC-12** | **Robustheitstest** | Monitor-Trennung während Sperre | `OverlayManager` berechnet Layout sofort neu. | ✅ |
 | **PF40 / LF70** | Datenvalidierung | CSV-Export (EU-Format) | Valide Datei; Dezimal-Komma statt Punkt genutzt. | ✅ |
+| **PF20 / TC-14** | Präzision | Glasgröße: 250ml | Anzeige folgt 0.25L Schritten (kein Rundungsfehler). | ✅ |
+| **PF10 / TC-04** | Regression| Klick auf Tropfen-Icon | Glas wird geloggt UND Overlay schließt sofort. | ✅ |
+| **PF60 / TC-13** | Zustandsvalidierung | Systemuhr auf 00:00 stellen | Zähler springt auf 0; Historie wird erstellt. | ✅ |
+| **PF10 / TC-12** | Robustheit | Monitor-Hotplugging | Layout-Rekalkulation erfolgt verzugslos. | ✅ |
 
 > **Hinweis:** Eine detaillierte Aufschlüsselung der Testdurchführung inklusive Zeitstempel und Defect-Reports findet sich in der separaten [Testdokumentation](./TESTDOKUMENTATION.md).
 
@@ -147,7 +188,9 @@ Zur Sicherstellung der Softwarequalität wurden spezifische Testmethoden (Black-
 
 ## 4. Wartung & Roadmap
 - **v1.5.0:** Integration von Push-Notifications bei verpassten Intervallen.
-- **v1.6.0:** Optionale Anbindung an die Apple Health API (macOS).
+- **v1.6.0:** Unterstützung für alternative Maßeinheiten (fl oz).
+- **v1.7.0:** Optionale Anbindung an die Apple Health API (macOS).
+
 
 [← Zurück zur Übersicht](../README.md)
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>

@@ -3,8 +3,8 @@
 # Lastenheft: HydrationFreeze
 
 **Projekt:** macOS Hydration Tracker mit Overlay-Sperre  
-**Version:** 1.4.2  
-**Status:** Aktualisiert für Release v1.4.2
+**Version:** 1.4.3 
+**Status:** Aktualisiert für Release v1.4.3
 
 ---
 
@@ -27,11 +27,13 @@ Förderung der Gesundheit am Arbeitsplatz durch eine App, die den Nutzer in fest
 
 * **[ /LF50/ ] Vollbild-Sperre (Overlay)** Überlagerung aller angeschlossenen Monitore mit einer Sperrdauer von 5 bis 60 Sekunden. Ein Umgehen der Sperre während der Laufzeit ist zu verhindern.
 
-* **[ /LF60/ ] Interaktives Progress-Tracking** Bereitstellung klickbarer Symbole im Overlay zur Erfassung der getrunkenen Wassermenge in Echtzeit. **Die Symbole müssen ihren Status (gefüllt/leer) und die kumulierte Liter-Anzeige basierend auf der aktuellen Glasgröße in Echtzeit aktualisieren.**
+* **[ /LF60/ ] Interaktives Progress-Tracking** Bereitstellung klickbarer Symbole im Overlay zur Erfassung der getrunkenen Wassermenge in Echtzeit. Die Symbole müssen ihren Status (gefüllt/leer) und die kumulierte Liter-Anzeige in Echtzeit aktualisieren. **Um den Workflow des Nutzers minimal zu belasten, muss das Logging eines Glases die Overlay-Sperre unmittelbar beenden.**
 
 * **[ /LF70/ ] Daten-Export** Sicherung der Trink-Historie als CSV-Datei über einen System-Datei-Dialog, wobei die Volumenberechnung auf den konfigurierten Werten basieren muss.
 
 * **[ /LF80/ ] Mobile-Sync per QR-Code** Anzeige eines statischen QR-Codes zur Kopplung mit externen Automatisierungstools (z. B. iOS-Kurzbefehle).
+
+* **[ /LF90/ ] Automatischer Tages-Reset** Das System muss sicherstellen, dass der Trink-Zähler zu Beginn eines neuen Kalendertages (00:00 Uhr) oder beim ersten Erwachen des Systems an einem neuen Tag automatisch auf Null gesetzt wird. Vorherige Daten müssen dabei in der lokalen Historie archiviert werden.
 
 ---
 

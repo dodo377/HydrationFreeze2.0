@@ -4,7 +4,7 @@
 
 **Version:** 1.4.2 | **Referenz:** Lastenheft v1.4.2, Pflichtenheft v1.4.2  
 **Standard:** ISTQB-Standard (basierend auf IEEE 829)  
-**Status:** Bedingt freigegeben (Bekannter Fehler: DEF-06)
+**Status:** ✅ Freigegeben
 
 ---
 
@@ -73,6 +73,14 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schw
 - **Szenario:** Physische Monitor-Trennung (Hotplugging) bei aktivem Overlay.
 - **Erwartetes Ergebnis:** `OverlayManager` berechnet Layout sofort neu; Sperre bleibt lückenlos erhalten.
 - **Status:** ✅ Bestanden
+ 
+#### TC-13: Tageswechsel-Reset (Regession)
+- **Erwartetes Ergebnis:** Zähler springt um 00:00 Uhr (oder bei System-Wake) auf 0; Historie wird archiviert.
+- **Status:** ✅ Bestanden
+ 
+#### TC-14: Präzision der Volumenanzeige
+- **Erwartetes Ergebnis:** Bei 250ml-Schritten müssen exakt zwei Nachkommastellen angezeigt werden (0.25, 0.50, 0.75). Keine Rundungsfehler auf 0.2 oder 0.8.
+- **Status:** ✅ Bestanden
 
 ---
 
@@ -83,6 +91,8 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schw
 | **v1.4.2-REG** | **TC-01 – TC-06** | 05.03.2026 | [D. Obendorf] | **Fail** | Regression TC-04 fehlgeschlagen (DEF-06). |
 | **v1.4.2-UI** | **TC-07 – TC-09** | 05.03.2026 | [D. Obendorf] | **Pass** | Adaptive Skalierung & Alignment erfolgreich. |
 | **v1.4.2-SPEC** | **TC-10 – TC-12** | 05.03.2026 | [D. Obendorf] | **Pass** | Grenzwerte & Robustheit (Hotplugging) stabil. |
+| **v1.4.2-REG** | **TC-13** | 06.03.2026 | [D. Obendorf] | **Pass** | TC-13 erfolgreich verifiziert. |
+| **v1.4.2-FINAL** | **TC-04, TC-14** | 06.03.2026 | [D. Obendorf] | **Pass** | Alle kritischen Fehler (Overlay, Rundung) behoben. |
 
 ---
 
@@ -94,10 +104,12 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.2. Der Schw
 | **DEF-02** | Unsauberes Settings-Alignment. | TC-09 | ✅ Behoben | Umstellung auf `LabeledContent`. |
 | **DEF-04** | Potenzielle Division durch Null. | TC-10 | ✅ Behoben | Stepper-Validierung verhindert Werte < 100ml. |
 | **DEF-05** | Sperre fehlte bei Zielerreichung. | TC-11 | ✅ Behoben | Logik-Update für unabhängige Sperr-Trigger. |
-| **DEF-06** | **Klick auf Tropfen-Icon loggt Volumen, beendet aber das Overlay nicht.** | TC-04 | ❌ Offen | **Workaround:** App mit `Command + Q` schließen. oder auf ein Symbol im Dock klicken |
+| **DEF-06** | Klick auf Tropfen-Icon loggt Volumen, beendet aber das Overlay nicht. | TC-04 | ✅ Behoben  | **Fix:** `onFinished()` Call in `addWater()` integriert. |
+| **DEF-07** | Automatischer Reset bei Tageswechsel triggert nicht. | TC-13 | ✅ Behoben | **Fix:** `NSCalendarDayChanged` Observer & Timer-Heartbeat implementiert. |
+| **DEF-08** | Inkorrekte Rundung bei 250ml (0.2 statt 0.25). | TC-14 | ✅ Behoben | **Fix:** String-Formatierung von `%.1f` auf `%.2f` korrigiert. |
 
 ---
-*Status: Keine kritischen Showstopper für die Datenintegrität. Interaktions-Bug (DEF-06) für v1.4.3 eingeplant.*
+*Status: ✅ **Vollständig freigegeben.** Alle Testfälle der Version 1.4.3 wurden erfolgreich abgeschlossen. Keine bekannten Defekte.*
 
 [← Zurück zur Übersicht](../README.md)
 

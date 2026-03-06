@@ -7,6 +7,21 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt der [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2026-03-06
+### Hinzugefügt
+- **Präzisions-Monitoring (TC-14):** Validierung der Volumenanzeige für krumme Werte. Die App unterstützt nun eine exakte Darstellung von zwei Nachkommastellen, was besonders bei 250ml-Intervallen (0.25L, 0.50L, 0.75L) für mathematische Korrektheit sorgt.
+- **V-Modell Integration:** Aufnahme des grafischen V-Modells in die Testdokumentation zur Visualisierung der Qualitätssicherungsschritte.
+- **ISTQB-Konforme Testdokumentation:** Komplette Überarbeitung des Testprotokolls und Fehlerberichts nach Industriestandard (IEEE 829).
+
+### Geändert
+- **Robuste Reset-Logik:** Erweiterung des `AppDelegate` um den `.NSCalendarDayChanged` Observer. Die App erkennt den Tageswechsel nun auch dann sofort, wenn sie über Mitternacht aktiv durchläuft, ohne dass ein System-Sleep erforderlich ist.
+- **Memory-Management:** Optimierung der Timer-Closures durch `[weak self]` Referenzen zur Vermeidung potenzieller Memory Leaks bei Langzeitbetrieb.
+
+### Behoben
+- **Interaktions-Bug (DEF-06):** Fix eines Fehlers, bei dem das Overlay nach dem Loggen eines Glases im Vordergrund verblieb. Die `OverlayView` sendet nun ein korrektes `onFinished()` Signal an den Manager.
+- **Rundungsfehler (DEF-08):** Korrektur der String-Formatierung von `%.1f` auf `%.2f`, um falsche Anzeigen (wie 0.2L statt 0.25L) bei spezifischen Glasgrößen zu verhindern.
+- **Automatischer Reset (DEF-07):** Behebung einer Instabilität, bei der der Zähler nach dem Aufwachen des Macs gelegentlich nicht auf 0 zurücksprang.
+
 ## [1.4.2] - 2026-03-05
 ### Hinzugefügt
 - **Adaptive UI-Skalierung:** Einführung einer dynamischen Icon-Berechnung (`dynamicIconSize`). Die Wassertropfen im Overlay passen ihre Größe nun automatisch an das Verhältnis von Tagesziel und Glasgröße an, um eine perfekte Darstellung ohne Scrollen zu gewährleisten.
