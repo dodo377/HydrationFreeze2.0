@@ -21,9 +21,11 @@ class OverlayManager {
             panel.ignoresMouseEvents = false
             panel.isFloatingPanel = true
             
+            // Hier wird die Schließ-Logik als Closure übergeben
             let hostingView = NSHostingView(rootView: OverlayView(onFinished: {
                 self.closeOverlays()
             }))
+            
             panel.contentView = hostingView
             panel.makeKeyAndOrderFront(nil)
             panel.orderFrontRegardless()
@@ -33,8 +35,10 @@ class OverlayManager {
     }
 
     func closeOverlays() {
-        overlayWindows.forEach { $0.close() }
-        overlayWindows.removeAll()
+        self.overlayWindows.forEach { window in
+            window.orderOut(nil)
+        }
+        self.overlayWindows.removeAll()
     }
 }
 
@@ -69,7 +73,6 @@ struct OverlayView: View {
         return min(timeRemaining / total, 1.0)
     }
 
-    // Berechnet die Größe der Tropfen basierend auf der Anzahl
     private var dynamicIconSize: CGFloat {
         let totalIcons = max(glassesNeededForGoal, glassesDrunk)
         if totalIcons <= 8 { return 45 }
@@ -127,7 +130,7 @@ struct OverlayView: View {
                     .foregroundColor(index < glassesDrunk ? .blue : .white.opacity(0.2))
                     .symbolEffect(.pulse, value: glassesDrunk == index)
 
-                Text("\(Double(index + 1) * Double(selectedGlassSize) / 1000.0, specifier: "%.1f")")
+                Text("\(Double(index + 1) * Double(selectedGlassSize) / 1000.0, specifier: "%.2f")")
                     .font(.system(size: dynamicIconSize * 0.3, design: .monospaced))
                     .foregroundColor(.gray)
             }
@@ -138,14 +141,12 @@ struct OverlayView: View {
 
     private var glassesRow: some View {
         VStack(spacing: 10) {
-            // Flow-ähnliches Layout: HStack, die bei Bedarf scrollt, aber versucht alles anzuzeigen
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: glassesNeededForGoal > 10 ? 8 : 15) {
                     ForEach(0..<max(glassesNeededForGoal, glassesDrunk), id: \.self) { index in
                         glassButton(index: index)
                     }
 
-                    // Plus-Button für Extra-Gläser
                     Button(action: { addWater() }) {
                         VStack(spacing: 5) {
                             Image(systemName: "plus.circle.fill")
@@ -153,7 +154,7 @@ struct OverlayView: View {
                                 .frame(width: dynamicIconSize, height: dynamicIconSize)
                                 .foregroundColor(.green)
                             
-                            Text("\(Double(glassesDrunk + 1) * Double(selectedGlassSize) / 1000.0, specifier: "%.1f")")
+                            Text("\(Double(glassesDrunk + 1) * Double(selectedGlassSize) / 1000.0, specifier: "%.2f")")
                                 .font(.system(size: dynamicIconSize * 0.3, design: .monospaced))
                                 .foregroundColor(.green)
                         }
@@ -209,16 +210,20 @@ struct OverlayView: View {
     }
 
     func updateMessage() {
-            if isGoalReached {
-                motivationMessage = "Wahnsinn! Du bist über dem Ziel! 🏆"
-            } else {
-                let quoteIndex = min(glassesDrunk, quotes.count - 1)
-                motivationMessage = quotes[quoteIndex]
-            }
-        }
-        
-        private func addWater() {
-            glassesDrunk += 1
-            updateMessage()
+        if isGoalReached {
+            motivationMessage = "Wahnsinn! Du bist über dem Ziel! 🏆"
+        } else {
+            let quoteIndex = min(glassesDrunk, quotes.count - 1)
+            motivationMessage = quotes[quoteIndex]
         }
     }
+        
+    private func addWater() {
+        glassesDrunk += 1
+        updateMessage()
+        
+        // --- FIX FÜR DEF-06 ---
+        // Schließt das Overlay sofort nach der Interaktion
+        onFinished()
+    }
+}

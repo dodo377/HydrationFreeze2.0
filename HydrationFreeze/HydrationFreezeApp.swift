@@ -31,53 +31,65 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var timer: Timer?
     let overlayManager = OverlayManager()
     
+    // MARK: - Persistence
     @AppStorage("intervalMinutes") var intervalMinutes = 30
     @AppStorage("lastUpdateDay") var lastUpdateDay = ""
+    @AppStorage("glassesDrunk") var glassesDrunk = 0 // Direktzugriff für UI-Reaktivität
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Initialer Check beim Start
         checkNewDay()
         startTimer()
         
-        // WICHTIG: Beobachtet das Aufwachen des Macs
+        // 1. Beobachtet das Aufwachen des Macs aus dem Ruhezustand
         NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.didWakeNotification,
             object: nil,
             queue: .main
-        ) { _ in
-            self.checkNewDay()
+        ) { [weak self] _ in
+            self?.checkNewDay()
+        }
+        
+        // 2. WICHTIG: Beobachtet den systemweiten Datumswechsel (Mitternacht-Trigger)
+        NotificationCenter.default.addObserver(
+            forName: .NSCalendarDayChanged,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.checkNewDay()
         }
     }
 
+    /// Prüft, ob seit dem letzten Log ein neuer Tag angebrochen ist
     func checkNewDay() {
-        // ISO-Format ist immun gegen Spracheinstellungen (immer "2024-03-04")
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let today = formatter.string(from: Date())
         
-        // Erster Start der App überhaupt
+        // Erster Start der App überhaupt: Nur Datum setzen, kein Reset nötig
         if lastUpdateDay == "" {
             lastUpdateDay = today
             return
         }
 
-        // Vergleich: Ist das gespeicherte Datum ungleich heute?
+        // Wenn gespeichertes Datum != heute -> Ein neuer Tag ist angebrochen!
         if lastUpdateDay != today {
-            // 1. Hole den Wert von gestern direkt aus den UserDefaults
-            let glassesYesterday = UserDefaults.standard.integer(forKey: "glassesDrunk")
-            let amount = Double(glassesYesterday) * 0.2
+            print("Neuer Tag erkannt (\(today)). Starte Archivierung und Reset...")
             
-            // 2. Berechne das Datum von gestern für den Log
+            // 1. Archivieren: Nutze den aktuellen Wert von glassesDrunk
+            let amount = Double(glassesDrunk) * 0.2
+            
+            // 2. Datum von gestern berechnen
             let yesterdayDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()
             
-            // 3. Archivieren
+            // 3. In die Historie schreiben
             saveToHistory(entry: HydrationLog(date: yesterdayDate, amount: amount))
             
-            // 4. RESET: Setze Zähler auf 0
-            UserDefaults.standard.set(0, forKey: "glassesDrunk")
+            // 4. RESET: Durch @AppStorage wird die UI überall sofort auf 0 gesetzt
+            self.glassesDrunk = 0
             
-            // 5. Speicherdatum aktualisieren
+            // 5. Speicherdatum auf heute aktualisieren
             lastUpdateDay = today
-            print("Neuer Tag erkannt: Reset durchgeführt.")
         }
     }
 
@@ -85,11 +97,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let jsonString = UserDefaults.standard.string(forKey: "historyJSON") ?? "[]"
         guard let jsonData = jsonString.data(using: .utf8) else { return }
         
-        // Sicherer Decode ohne "!"
         var history = (try? JSONDecoder().decode([HydrationLog].self, from: jsonData)) ?? []
         history.append(entry)
         
-        // Behalte nur die letzten 14 Tage (Lastenheft-Anforderung)
+        // Behalte nur die letzten 14 Tage
         if history.count > 14 {
             history.removeFirst()
         }
@@ -101,12 +112,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func startTimer() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: Double(intervalMinutes) * 60, repeats: true) { _ in
-            self.triggerFreeze()
+        // Nutze weak self, um Memory Leaks zu vermeiden
+        timer = Timer.scheduledTimer(withTimeInterval: Double(intervalMinutes) * 60, repeats: true) { [weak self] _ in
+            self?.triggerFreeze()
         }
     }
 
     @objc func triggerFreeze() {
+        // Sicherheits-Check: Falls der Mac über Mitternacht an war und der Timer feuert
+        checkNewDay()
         overlayManager.showOverlays()
     }
 }
