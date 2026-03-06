@@ -1,6 +1,6 @@
 # 💧 HydrationFreeze (macOS)
 
-> **Ein intelligenter Trink-Reminder, der deinen Workflow schützt, indem er dich zur Hydration zwingt.**
+> **Ein intelligenter Trink-Reminder, der dich daran erinnert etwas zu trinken.**
 
 [![Release](https://img.shields.io/github/v/release/dodo377/HydrationFreeze2.0?color=blue)](https://github.com/dodo377/HydrationFreeze2.0/releases)
 [![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey)](https://apple.com/macos)
@@ -14,6 +14,12 @@ Besuche die **[interaktive Dokumentations-Seite](https://dodo377.github.io/Hydra
 * [**Lastenheft**](./HydrationFreeze/LASTENHEFT.md) | [**Pflichtenheft**](./HydrationFreeze/PFLICHTENHEFT.md) | [**Testdokumentation**](./HydrationFreeze/TESTDOKUMENTATION.md) | [**Changelog**](./HydrationFreeze/CHANGELOG.md) | [**Handbuch**](./HydrationFreeze/HANDBUCH.md)
 
 ---
+
+## 🛡️ Qualitätssicherung (V-Modell & ISTQB)
+Dieses Projekt zeichnet sich durch einen hohen Qualitätsstandard aus. Die Entwicklung folgt dem V-Modell, um eine lückenlose Rückverfolgbarkeit von den Anforderungen bis zu den verifizierten Testfällen zu gewährleisten.
+- **Test-Suite:** Über 14 definierte Testfälle (TC-01 bis TC-14).
+- **Methodik:** Einsatz von Grenzwertanalysen und Entscheidungstabellentests zur Absicherung kritischer Logikpfade.
+- **Standard:** Dokumentation angelehnt an den **ISTQB-Standard** (basierend auf IEEE 829).
 
 ## 🧠 Funktionsweise (Logic Flow)
 Die App folgt einer strikten Zustandslogik, um sicherzustellen, dass du dein Tagesziel erreichst:
@@ -29,16 +35,15 @@ stateDiagram-v2
 
 ---
 
-## ✨ Features (v1.4.2 Update)
+## ✨ Features (v1.4.3 Update)
 
-- **Adaptive UI & Smart Scaling**: Das Overlay berechnet die Icon-Größe dynamisch. Egal ob 4 große Gläser oder 20 kleine Tropfen – das Interface skaliert verlustfrei und überlappungsfrei.
-- **Individuelle Glasgröße**: Konfiguriere dein Standard-Gefäß (100ml bis 1000ml) für präzises Tracking.
-- **Dynamisches Tagesziel**: Setze dein persönliches Limit (z.B. 2,5L) – die App passt die benötigte Tropfenanzahl und die Erfolgsmeldungen automatisch an.
-- **macOS Native Design**: Eine komplett überarbeitete Einstellungsansicht nach Apple Human Interface Guidelines für ein nahtloses Systemerlebnis.
-- **Smart Blocking Overlay**: Legt sich über alle Monitore auf System-Level. Die Fortschrittsanzeige berechnet sich live aus deiner konfigurierten Glasgröße.
-- **Adaptive Statistik**: Ein Dashboard mit **Swift Charts**, inklusive dynamischer Ziellinie (`RuleMark`), die mit deinem Ziel mitwandert.
-- **Robuster Tages-Reset**: Erkennt Datumswechsel zuverlässig beim App-Start und beim Aufwachen des Macs (Wake-from-Sleep).
-- **Mobile-Sync**: Ein statischer QR-Code erlaubt das schnelle Loggen in Apple Health via iPhone Kurzbefehl.
+- **Präzisions-Tracking (Neu in v1.4.3):** Optimierte Volumenberechnung mit zwei Nachkommastellen. Perfekt für 250ml-Gläser (0.25L, 0.50L, 0.75L) ohne Rundungsfehler.
+- **Nahtlose Interaktion:** Das Overlay schließt sich nun sofort nach der Interaktion automatisch (**DEF-06 Fix**).
+- **Robuster Mitternachts-Reset:** Dank `.NSCalendarDayChanged` Observer erkennt die App den Tageswechsel nun auch im aktiven Betrieb exakt um 00:00 Uhr.
+- **Adaptive UI & Smart Scaling:** Das Overlay berechnet die Icon-Größe dynamisch. Egal ob 4 große Gläser oder 20 kleine Tropfen – das Interface skaliert verlustfrei.
+- **macOS Native Design:** Einstellungsansicht nach Apple Human Interface Guidelines (SwiftUI `LabeledContent`).
+- **Adaptive Statistik:** Dashboard mit Swift Charts, inklusive dynamischer Ziellinie (`RuleMark`).
+- **Mobile-Sync:** Statischer QR-Code zum schnellen Loggen via iPhone Kurzbefehl direkt in Apple Health.
 
 ---
 
@@ -82,7 +87,7 @@ Für die Synchronisation mit Apple Health:
 ## 🛡 Systemanforderungen
 
 - **OS**: macOS 14.0+ (Optimiert für macOS 15+ / Apple Silicon & Intel)
-- **Status**: Validiert für Release v1.4.2 (2026)
+- **Status**: Validiert für Release v1.4.3 (2026)
 
 ---
 
