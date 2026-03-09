@@ -1,0 +1,38 @@
+name: HydrationFreeze CI/CD
+
+# Wann soll diese Action ausgeführt werden?
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-check:
+    name: Build macOS App & Check Docs
+    # Wir nutzen den aktuellsten macOS Runner von GitHub
+    runs-on: macos-14 
+
+    steps:
+      # 1. Lade den Code aus dem Repository herunter
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Markdown-Validierung (QA-Check für dein V-Modell!)
+      - name: 📝 Validate Markdown Documentation
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: "**/*.md"
+        # Ignoriere Fehler vorerst, markiere sie nur als Warnung
+        continue-on-error: true 
+
+      # 3. Xcode-Build durchführen (Testet, ob der Code kompilierbar ist)
+      - name: 🛠️ Build App (Dry-Run)
+        run: |
+          xcodebuild clean build \
+            -project HydrationFreeze.xcodeproj \
+            -scheme HydrationFreeze \
+            -destination 'platform=macOS,arch=arm64' \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
