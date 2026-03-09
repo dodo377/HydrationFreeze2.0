@@ -19,6 +19,7 @@ Besuche die **[interaktive Dokumentations-Seite](https://dodo377.github.io/Hydra
 ## 🛡️ Qualitätssicherung (V-Modell & ISTQB)
 Dieses Projekt zeichnet sich durch einen hohen Qualitätsstandard aus. Die Entwicklung folgt dem V-Modell, um eine lückenlose Rückverfolgbarkeit von den Anforderungen bis zu den verifizierten Testfällen zu gewährleisten.
 - **Test-Suite:** Über 14 definierte Testfälle (TC-01 bis TC-14).
+* **Automatisierung (Neu):** Die kritische Geschäftslogik (Präzision, Skalierung, Reset) ist durch eine **XCTest Unit-Test-Suite** vollständig automatisiert abgedeckt.
 - **Methodik:** Einsatz von Grenzwertanalysen und Entscheidungstabellentests zur Absicherung kritischer Logikpfade.
 - **Standard:** Dokumentation angelehnt an den **ISTQB-Standard** (basierend auf IEEE 829).
 

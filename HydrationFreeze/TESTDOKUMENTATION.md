@@ -25,6 +25,19 @@ Dieses Dokument beschreibt die Testaktivitäten für die Version 1.4.3. Der Schw
 ---
 
 ## 2. Testfallspezifikation (Test Case Specification)
+ 
+### 🤖 Automatisierte Test-Suite (XCTest)
+Um die kritische Geschäftslogik abzusichern, wurden ausgewählte Testfälle in eine automatisierte Unit-Test-Suite (`HydrationFreezeTests`) überführt. 
+
+Folgende Tests werden bei jedem Build (und in der CI/CD-Pipeline) automatisch validiert:
+* **TC-04:** Interaktions-Logik & Auto-Close
+* **TC-10:** Skalierungs-Mathematik (Grenzwertanalyse)
+* **TC-11:** Timer-Priorisierung (Entscheidungstabelle)
+* **TC-12:** Multi-Monitor-Layout-Logik
+* **TC-13:** Tageswechsel-Validierung (`checkNewDay`)
+* **TC-14:** Volumen-Präzision (`%.2f`)
+
+*Die verbleibenden UI- und System-Tests (z. B. CSV-Export, QR-Code Scan) werden weiterhin manuell im Rahmen der Release-Freigabe (Black-Box-Testing) durchgeführt.*
 
 ### 2.1 Basistests (Regression v1.4.1)
 
