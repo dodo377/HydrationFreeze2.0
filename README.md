@@ -5,6 +5,7 @@
 [![Release](https://img.shields.io/github/v/release/dodo377/HydrationFreeze2.0?color=blue)](https://github.com/dodo377/HydrationFreeze2.0/releases)
 [![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey)](https://apple.com/macos)
 [![Docs](https://img.shields.io/badge/Doku-GitHub%20Pages-green)](https://dodo377.github.io/HydrationFreeze2.0/)
+[![CI/CD Build](https://github.com/dodo377/HydrationFreeze2.0/actions/workflows/ci.yml/badge.svg)](https://github.com/dodo377/HydrationFreeze2.0/actions)
 
 ---
 
