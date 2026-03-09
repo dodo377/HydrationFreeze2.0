@@ -10,20 +10,46 @@
 		C944B9F52F5984D8003B7DC2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C944B9F42F5984D8003B7DC2 /* README.md */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C944BA072F5DC907003B7DC2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C96995D82F4F010D00D3CC0B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C96995DF2F4F010D00D3CC0B;
+			remoteInfo = HydrationFreeze;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		C944B9F42F5984D8003B7DC2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C944BA032F5DC907003B7DC2 /* HydrationFreezeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HydrationFreezeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C96995E02F4F010D00D3CC0B /* HydrationFreeze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HydrationFreeze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C944BA042F5DC907003B7DC2 /* HydrationFreezeTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HydrationFreezeTests;
+			sourceTree = "<group>";
+		};
 		C96995E22F4F010D00D3CC0B /* HydrationFreeze */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+				TESTDOKUMENTATION.md = net.daringfireball.markdown;
+			};
 			path = HydrationFreeze;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C944BA002F5DC907003B7DC2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C96995DD2F4F010D00D3CC0B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -38,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				C96995E22F4F010D00D3CC0B /* HydrationFreeze */,
+				C944BA042F5DC907003B7DC2 /* HydrationFreezeTests */,
 				C96995E12F4F010D00D3CC0B /* Products */,
 				C944B9F42F5984D8003B7DC2 /* README.md */,
 			);
@@ -47,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				C96995E02F4F010D00D3CC0B /* HydrationFreeze.app */,
+				C944BA032F5DC907003B7DC2 /* HydrationFreezeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,6 +82,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C944BA022F5DC907003B7DC2 /* HydrationFreezeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C944BA092F5DC907003B7DC2 /* Build configuration list for PBXNativeTarget "HydrationFreezeTests" */;
+			buildPhases = (
+				C944B9FF2F5DC907003B7DC2 /* Sources */,
+				C944BA002F5DC907003B7DC2 /* Frameworks */,
+				C944BA012F5DC907003B7DC2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C944BA082F5DC907003B7DC2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C944BA042F5DC907003B7DC2 /* HydrationFreezeTests */,
+			);
+			name = HydrationFreezeTests;
+			packageProductDependencies = (
+			);
+			productName = HydrationFreezeTests;
+			productReference = C944BA032F5DC907003B7DC2 /* HydrationFreezeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C96995DF2F4F010D00D3CC0B /* HydrationFreeze */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C96995EB2F4F010E00D3CC0B /* Build configuration list for PBXNativeTarget "HydrationFreeze" */;
@@ -86,6 +137,10 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					C944BA022F5DC907003B7DC2 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = C96995DF2F4F010D00D3CC0B;
+					};
 					C96995DF2F4F010D00D3CC0B = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -106,11 +161,19 @@
 			projectRoot = "";
 			targets = (
 				C96995DF2F4F010D00D3CC0B /* HydrationFreeze */,
+				C944BA022F5DC907003B7DC2 /* HydrationFreezeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C944BA012F5DC907003B7DC2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C96995DE2F4F010D00D3CC0B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -122,6 +185,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C944B9FF2F5DC907003B7DC2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C96995DC2F4F010D00D3CC0B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -131,7 +201,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C944BA082F5DC907003B7DC2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C96995DF2F4F010D00D3CC0B /* HydrationFreeze */;
+			targetProxy = C944BA072F5DC907003B7DC2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		C944BA0A2F5DC907003B7DC2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DO.HydrationFreezeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HydrationFreeze.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HydrationFreeze";
+			};
+			name = Debug;
+		};
+		C944BA0B2F5DC907003B7DC2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DO.HydrationFreezeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HydrationFreeze.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HydrationFreeze";
+			};
+			name = Release;
+		};
 		C96995E92F4F010E00D3CC0B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -258,7 +374,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -269,7 +385,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = DO.HydrationFreeze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -290,7 +406,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -301,7 +417,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = DO.HydrationFreeze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -317,6 +433,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C944BA092F5DC907003B7DC2 /* Build configuration list for PBXNativeTarget "HydrationFreezeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C944BA0A2F5DC907003B7DC2 /* Debug */,
+				C944BA0B2F5DC907003B7DC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C96995DB2F4F010D00D3CC0B /* Build configuration list for PBXProject "HydrationFreeze" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
