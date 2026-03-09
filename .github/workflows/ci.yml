@@ -11,12 +11,17 @@ jobs:
   build-and-check:
     name: Build macOS App & Check Docs
     # Wir nutzen den aktuellsten macOS Runner von GitHub
-    runs-on: macos-14 
+    runs-on: macos-latest 
 
     steps:
       # 1. Lade den Code aus dem Repository herunter
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
+      
+      - name : 🍏 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable	
 
       # 2. Markdown-Validierung (QA-Check für dein V-Modell!)
       - name: 📝 Validate Markdown Documentation
